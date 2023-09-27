@@ -41,5 +41,9 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(libs.datastore.preferences.core)
 
+    testImplementation(libs.bundles.mockk)
+    testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
+
     implementation(project(path = ":network"))
 }

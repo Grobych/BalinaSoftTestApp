@@ -104,4 +104,5 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 
 [bundles]
 navigation = ["navigation-android","navigation-hilt"]
+mockk = ["mockk-android","mockk-agent"]
 
