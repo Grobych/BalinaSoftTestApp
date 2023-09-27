@@ -2,7 +2,8 @@ package com.globa.balinasofttestapp.network.api
 
 import com.globa.balinasofttestapp.network.api.model.Comment
 import com.globa.balinasofttestapp.network.api.model.CommentPost
-import com.globa.balinasofttestapp.network.api.model.Response
+import com.globa.balinasofttestapp.network.api.model.NetworkResponse
+import com.globa.balinasofttestapp.network.api.model.Resource
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -17,14 +18,14 @@ interface CommentsNetworkApi {
         @Header("Access-Token") token: String,
         @Path("imageId") id: Int,
         @Query("page") page: Int
-    ): Response<List<Comment>>
+    ): NetworkResponse<Resource<List<Comment>>>
 
     @POST("api/image/{imageId}/comment")
     suspend fun postComment(
         @Header("Access-Token") token: String,
         @Path("imageId") id: Int,
         @Body comment: CommentPost
-    ): Response<Comment>
+    ): NetworkResponse<Resource<Comment>>
 
     @DELETE("api/image/{imageId}/comment/{commentId}")
     suspend fun deleteComment(

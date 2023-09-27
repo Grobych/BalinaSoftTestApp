@@ -2,7 +2,8 @@ package com.globa.balinasofttestapp.network.api
 
 import com.globa.balinasofttestapp.network.api.model.ImageDtoIn
 import com.globa.balinasofttestapp.network.api.model.ImageDtoOut
-import com.globa.balinasofttestapp.network.api.model.Response
+import com.globa.balinasofttestapp.network.api.model.NetworkResponse
+import com.globa.balinasofttestapp.network.api.model.Resource
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -16,24 +17,24 @@ interface ImagesNetworkApi {
     suspend fun getImages(
         @Header("Access-Token") token: String,
         @Query("page") page: Int
-    ): Response<List<ImageDtoOut>>
+    ): NetworkResponse<Resource<List<ImageDtoOut>>>
 
     @POST("api/image")
     suspend fun postImage(
         @Header("Access-Token") token: String,
         @Body imageDtoIn: ImageDtoIn
-    ): Response<ImageDtoOut>
+    ): NetworkResponse<Resource<ImageDtoOut>>
 
     @DELETE("api/image/{id}")
     suspend fun deleteImage(
         @Header("Access-Token") token: String,
         @Path("id") id: Int
-    ): Response<ImageDtoOut>
+    ): NetworkResponse<Resource<ImageDtoOut>>
 
     @GET("api/image/{id}")
     suspend fun getImage(
         @Header("Access-Token") token: String,
         @Path("id") id: Int
-    ): Response<ImageDtoOut>
+    ): NetworkResponse<Resource<ImageDtoOut>>
 
 }

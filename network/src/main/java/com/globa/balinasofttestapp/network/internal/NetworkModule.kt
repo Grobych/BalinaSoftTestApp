@@ -21,6 +21,7 @@ class NetworkModule {
         .Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(NetworkResultCallAdapterFactory.create())
         .build()
 
     @Provides
