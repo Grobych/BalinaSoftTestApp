@@ -7,7 +7,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class TokenDataStore @Inject constructor(
+internal class TokenDataStore @Inject constructor(
     private val context: Context
 ){
     private val Context.dataStore by preferencesDataStore(name = "token_datastore")
