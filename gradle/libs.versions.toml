@@ -31,6 +31,9 @@ appcompat = "1.6.1"
 
 [libraries]
 
+# Accompanist
+accompanist = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist"}
+
 # Compose
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
