@@ -1,5 +1,6 @@
 package com.globa.balinasofttestapp.login.internal
 
+import com.globa.balinasofttestapp.login.api.AuthData
 import com.globa.balinasofttestapp.login.api.LoginRepository
 import com.globa.balinasofttestapp.login.api.LoginStatus
 import com.globa.balinasofttestapp.network.api.model.NetworkResponse
@@ -9,12 +10,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 internal class LoginRepositoryImpl @Inject constructor(
     private val tokenDataStore: TokenDataStore,
+    private val userNameDataStore: UserNameDataStore,
     private val tokenNetworkDataSource: TokenNetworkDataSource,
     private val scope: CoroutineScope
 ): LoginRepository {
@@ -22,8 +25,18 @@ internal class LoginRepositoryImpl @Inject constructor(
 
     init {
         scope.launch {
-            tokenDataStore.getAccessToken().collect {token ->
-                if (token.isNotEmpty()) _loginStatus.update { LoginStatus.Success(token = token) }
+            tokenDataStore.getAccessToken()
+                .combine(userNameDataStore.getUserName()) { token,userName ->
+                    AuthData(
+                        token = token,
+                        userName = userName
+                    )
+                }
+                .collect {authData ->
+                if (authData.token.isNotEmpty() && authData.userName.isNotEmpty())
+                    _loginStatus.update {
+                        LoginStatus.Success(authData = authData)
+                    }
             }
         }
     }
@@ -41,8 +54,9 @@ internal class LoginRepositoryImpl @Inject constructor(
     private fun handleSignResponse(response: NetworkResponse<Resource<SignUserDtoOut>>) {
         when (response) {
             is NetworkResponse.Success -> {
-                _loginStatus.update {
-                    LoginStatus.Success(response.data.body.token)
+                scope.launch {
+                    tokenDataStore.saveAccessToken(response.data.body.token)
+                    userNameDataStore.saveUserName(response.data.body.login)
                 }
             }
             is NetworkResponse.Error -> {
