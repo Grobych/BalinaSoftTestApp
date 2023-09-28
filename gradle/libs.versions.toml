@@ -14,6 +14,7 @@ junit = "4.13.2"
 kotlin-coroutines = "1.7.1"
 lifecycle = "2.6.2"
 lifecycleRuntimeKtx = "2.6.2"
+location = "21.0.1"
 mockk = "1.13.5"
 navigation = "2.7.3"
 navigation-hilt = "1.0.0"
@@ -46,6 +47,9 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 
 # Lifecycle
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+
+# Location
+location = { module = "com.google.android.gms:play-services-location", version.ref = "location"}
 
 # Hilt
 hilt-core = { module = "com.google.dagger:hilt-android", version.ref = "dagger"}

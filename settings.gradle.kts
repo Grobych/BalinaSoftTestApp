@@ -17,3 +17,5 @@ rootProject.name = "BalinaSoft Test App"
 include(":app")
 include(":network")
 include(":data:login")
+include(":data:location")
+include(":common")
