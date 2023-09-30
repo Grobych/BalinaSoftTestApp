@@ -30,16 +30,17 @@ import com.globa.balinasofttestapp.ui.theme.BalinaSoftTestAppTheme
 @Composable
 fun AppDrawerItem(
     modifier: Modifier = Modifier,
+    navItem: NavItem,
     iconId: Int,
     descriptionId: Int,
     nameId: Int,
-    onClick: () -> Unit
+    onClick: (NavItem) -> Unit
 ) =
     Surface(
         color = MaterialTheme.colorScheme.onPrimary,
         modifier = modifier
             .fillMaxWidth(),
-        onClick = { onClick() },
+        onClick = { onClick(navItem) },
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -69,6 +70,7 @@ fun DrawerItemPreview() {
     BalinaSoftTestAppTheme {
         Column {
             AppDrawerItem(
+                navItem = NavItem.PhotoListScreen,
                 iconId = R.drawable.ic_account_circle,
                 descriptionId = R.string.photos_menu_item,
                 nameId = R.string.photos_menu_item
@@ -77,11 +79,11 @@ fun DrawerItemPreview() {
             Divider()
 
             AppDrawerItem(
+                navItem = NavItem.MapScreen,
                 iconId = R.drawable.ic_map,
                 descriptionId = R.string.map_menu_item,
                 nameId = R.string.map_menu_item
             ) {}
         }
-
     }
 }

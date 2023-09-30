@@ -1,68 +1,64 @@
 package com.globa.balinasofttestapp
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.globa.balinasofttestapp.location.api.LocationResponse
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.MultiplePermissionsState
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import com.globa.balinasofttestapp.navigation.AppDrawerContent
+import com.globa.balinasofttestapp.navigation.NavItem
+import com.globa.balinasofttestapp.navigation.NavRoutes
+import com.globa.balinasofttestapp.navigation.mainGraph
+import com.globa.balinasofttestapp.ui.theme.BalinaSoftTestAppTheme
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
-    val permissionsState = rememberMultiplePermissionsState(
-        permissions = listOf(
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-    )
-    LocationPermissions(multiplePermissionState = permissionsState)
-}
-
-
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun LocationPermissions(
-    multiplePermissionState: MultiplePermissionsState
+fun MainScreen(
+    navController: NavHostController = rememberNavController(),
+    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 ) {
-    if (multiplePermissionState.allPermissionsGranted) {
-        ScreenAfterPermissions()
-    } else {
-        Box(
-            contentAlignment = Alignment.Center
-        ) {
-            Column {
-                Text(text = "App requires permissions")
-                Button(onClick = { multiplePermissionState.launchMultiplePermissionRequest() }) {
-                    Text(text = "Grant permissions")
+    BalinaSoftTestAppTheme {
+        Surface {
+            ModalNavigationDrawer(
+                drawerState = drawerState,
+                drawerContent = {
+                    AppDrawerContent(
+                        drawerState = drawerState,
+                        userName = "Tempo Name",
+                        defaultPick = NavItem.PhotoListScreen
+                    ) { onUserPickedOption ->
+                        when (onUserPickedOption) {
+                            NavItem.PhotoListScreen -> {
+                                navController.navigate(onUserPickedOption.name) {
+                                    popUpTo(NavRoutes.MainRoute.name)
+                                }
+                            }
+                            NavItem.MapScreen -> {
+                                navController.navigate(onUserPickedOption.name) {
+                                    popUpTo(NavRoutes.MainRoute.name)
+                                }
+                            }
+                            else -> {}
+                        }
+                    }
+                }
+            ) {
+//                val isLogin = //TODO: check login
+                NavHost(
+                    navController,
+                    startDestination = NavRoutes.MainRoute.name
+                ) {
+                    mainGraph(drawerState)
                 }
             }
         }
-
     }
 }
 
-@Composable
-fun ScreenAfterPermissions(
-    viewModel: TestLocationViewModel = hiltViewModel()
-) {
-    val locationState = viewModel.locationState.collectAsState()
-    viewModel.flushLocation()
-    when (val state = locationState.value) {
-        is LocationResponse.Unset -> {
-            Text(text = "Unset")
-        }
-        is LocationResponse.Error -> {
-            Text(text = state.message)
-        }
-        is LocationResponse.Success -> {
-            Text(text = "${state.location}")
-        }
-    }
-}
