@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BalinaSoft Test App</string>
+    
+<!--  Navigation menu  -->
+    <string name="photos_menu_item">Photos</string>
+    <string name="map_menu_item">Map</string>
 </resources>
