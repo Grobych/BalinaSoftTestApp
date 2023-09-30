@@ -27,7 +27,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.globa.balinasofttestapp.login.api.LoginStatus
 
 @Composable
 fun AuthorizationScreen(
@@ -39,7 +38,9 @@ fun AuthorizationScreen(
     val selectedTab = viewModel.tab.collectAsState()
 
     val loginStatus = viewModel.isAuthorized.collectAsState()
-    if (loginStatus.value is LoginStatus.Success) navigateToMainScreen()
+    if (loginStatus.value) {
+        navigateToMainScreen()
+    }
     
     val tabClicked = fun (tab: AuthorizationScreenTab) {viewModel.selectTab(tab)}
     val onReturnButtonClick = fun() {viewModel.onReturnClick()}

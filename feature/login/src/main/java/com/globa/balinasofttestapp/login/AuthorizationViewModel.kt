@@ -2,10 +2,12 @@ package com.globa.balinasofttestapp.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.globa.balinasofttestapp.login.api.AuthData
 import com.globa.balinasofttestapp.login.api.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,7 +25,25 @@ class AuthorizationViewModel @Inject constructor(
     private val _tab = MutableStateFlow(AuthorizationScreenTab.SignIn)
     val tab = _tab.asStateFlow()
 
-    val isAuthorized = repository.getLoginStatus()
+    private val _isAuthorized = MutableStateFlow(false)
+    val isAuthorized = _isAuthorized.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            repository.getLoginStatus()
+                .onEach {
+                    when(val data = it) {
+                        is AuthData.Success -> {
+                            if (data.token.isNotEmpty() && data.userName.isNotEmpty())
+                                _isAuthorized.value = true
+                        }
+                        is AuthData.Error -> {
+                            _uiState.update { AuthorizationUiState.Error(data.message) }
+                        }
+                    }
+                }
+        }
+    }
 
     fun selectTab(tab: AuthorizationScreenTab) = _tab.update { tab }
     fun onReturnClick() {
@@ -97,7 +117,18 @@ class AuthorizationViewModel @Inject constructor(
             if (!errorUiState.isLoginError &&
                 !errorUiState.isPasswordError
             ) {
-                viewModelScope.launch { repository.signIn(state.login,state.password) }
+                viewModelScope.launch {
+                    when(val response = repository.signIn(state.login,state.password)) {
+                        is AuthData.Error -> {
+                            _uiState.update {
+                                AuthorizationUiState.Error(response.message)
+                            }
+                        }
+                        is AuthData.Success -> {
+                            _isAuthorized.value = true
+                        }
+                    }
+                }
             }
         }
     }
@@ -113,7 +144,18 @@ class AuthorizationViewModel @Inject constructor(
                 !errorUiState.isPasswordError &&
                 !errorUiState.isConfirmPasswordError
             ) {
-                viewModelScope.launch { repository.signUp(state.login,state.password) }
+                viewModelScope.launch {
+                    when(val response = repository.signUp(state.login,state.password)) {
+                        is AuthData.Error -> {
+                            _uiState.update {
+                                AuthorizationUiState.Error(response.message)
+                            }
+                        }
+                        is AuthData.Success -> {
+                            _isAuthorized.value = true
+                        }
+                    }
+                }
             }
         }
     }

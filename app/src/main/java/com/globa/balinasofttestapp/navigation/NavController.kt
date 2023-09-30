@@ -1,14 +1,14 @@
 package com.globa.balinasofttestapp.navigation
 
 import androidx.compose.material3.DrawerState
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.globa.balinasofttestapp.MapScreen
 import com.globa.balinasofttestapp.PhotoListScreen
+import com.globa.balinasofttestapp.login.AuthorizationScreen
 
-@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.mainGraph(drawerState: DrawerState) {
     navigation(startDestination = NavItem.PhotoListScreen.name, route = NavRoutes.MainRoute.name) {
         composable(NavItem.PhotoListScreen.name){
@@ -20,8 +20,15 @@ fun NavGraphBuilder.mainGraph(drawerState: DrawerState) {
         composable(NavItem.MapScreen.name){
             MapScreen(drawerState)
         }
+
+    }
+}
+
+fun NavGraphBuilder.loginGraph(navController: NavController) {
+    val navigateToMain = fun() {navController.navigate(NavItem.PhotoListScreen.name)}
+    navigation(startDestination = NavItem.LoginScreen.name, route = NavRoutes.LoginRoute.name) {
         composable(NavItem.LoginScreen.name){
-            //TODO: login screen
+            AuthorizationScreen(navigateToMainScreen = navigateToMain)
         }
     }
 }

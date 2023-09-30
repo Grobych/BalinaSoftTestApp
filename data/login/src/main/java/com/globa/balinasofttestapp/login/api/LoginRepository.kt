@@ -1,10 +1,9 @@
 package com.globa.balinasofttestapp.login.api
 
-import kotlinx.coroutines.flow.StateFlow
-
+import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {
-    fun getLoginStatus(): StateFlow<LoginStatus>
-    suspend fun signUp(login: String, password: String)
-    suspend fun signIn(login: String, password: String)
+    fun getLoginStatus(): Flow<AuthData>
+    suspend fun signUp(login: String, password: String): AuthData
+    suspend fun signIn(login: String, password: String): AuthData
 }

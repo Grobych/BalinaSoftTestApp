@@ -7,7 +7,10 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
+
+@Singleton
 internal class UserNameDataStore @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
