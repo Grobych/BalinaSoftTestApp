@@ -16,7 +16,7 @@ import com.globa.balinasofttestapp.navigation.NavItem
 import com.globa.balinasofttestapp.navigation.NavRoutes
 import com.globa.balinasofttestapp.navigation.loginGraph
 import com.globa.balinasofttestapp.navigation.mainGraph
-import com.globa.balinasofttestapp.ui.theme.BalinaSoftTestAppTheme
+import com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme
 
 @Composable
 fun MainScreen(

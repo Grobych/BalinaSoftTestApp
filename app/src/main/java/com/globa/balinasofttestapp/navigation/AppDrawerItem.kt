@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -24,9 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.globa.balinasofttestapp.R
-import com.globa.balinasofttestapp.ui.theme.BalinaSoftTestAppTheme
+import com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDrawerItem(
     modifier: Modifier = Modifier,

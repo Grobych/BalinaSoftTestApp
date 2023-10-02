@@ -1,4 +1,4 @@
-package com.globa.balinasofttestapp.common
+package com.globa.balinasofttestapp.common.di
 
 import dagger.Module
 import dagger.Provides

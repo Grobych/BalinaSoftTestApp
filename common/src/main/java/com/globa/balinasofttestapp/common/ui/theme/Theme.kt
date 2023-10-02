@@ -1,4 +1,4 @@
-package com.globa.balinasofttestapp.ui.theme
+package com.globa.balinasofttestapp.common.ui.theme
 
 import android.app.Activity
 import android.os.Build

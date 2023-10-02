@@ -1,7 +1,7 @@
 package com.globa.balinasofttestapp.location.internal
 
 import android.annotation.SuppressLint
-import com.globa.balinasofttestapp.common.IoDispatcher
+import com.globa.balinasofttestapp.common.di.IoDispatcher
 import com.globa.balinasofttestapp.location.api.LocationResponse
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority

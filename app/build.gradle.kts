@@ -53,6 +53,11 @@ android {
 }
 
 dependencies {
+    implementation(project(path = ":data:location"))
+    implementation(project(path = ":data:login")) //TODO: remove?
+    implementation(project(path = ":feature:login"))
+    implementation(project(path = ":common"))
+
     implementation(libs.accompanist)
 
     implementation(libs.hilt.core)
@@ -61,22 +66,14 @@ dependencies {
     implementation (libs.lifecycle.viewmodel)
     implementation(libs.bundles.navigation)
 
-    implementation(project(path = ":data:location"))
-    implementation(project(path = ":data:login")) //TODO: remove?
-    implementation(project(path = ":feature:login"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
     implementation(libs.androidx.activity.compose)
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(libs.compose.material3)
+
+    implementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
 }

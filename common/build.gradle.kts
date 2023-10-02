@@ -32,6 +32,12 @@ android {
     kotlin {
         jvmToolchain(17)
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
 }
 
 dependencies {
@@ -39,4 +45,11 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     implementation(libs.location)
+
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(libs.compose.material3)
+
+    implementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
 }

@@ -1,4 +1,4 @@
-package com.globa.balinasofttestapp
+package com.globa.balinasofttestapp.common.ui.composable
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -17,8 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.globa.balinasofttestapp.ui.theme.BalinaSoftTestAppTheme
-import com.globa.balinasofttestapp.ui.theme.headerHeight
+import com.globa.balinasofttestapp.common.R
 
 @Composable
 fun MenuHeader(
@@ -27,7 +26,7 @@ fun MenuHeader(
 ) {
     Row(
         modifier = modifier
-            .height(headerHeight)
+            .height(com.globa.balinasofttestapp.common.ui.theme.headerHeight)
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.background),
         verticalAlignment = Alignment.CenterVertically,
@@ -48,7 +47,7 @@ fun MenuHeader(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun MenuHeaderPreview() {
-    BalinaSoftTestAppTheme {
+    com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme {
         MenuHeader {}
     }
 }
@@ -59,7 +58,7 @@ fun EmptyHeader(
 ) {
     Row(
         modifier = modifier
-            .height(headerHeight)
+            .height(com.globa.balinasofttestapp.common.ui.theme.headerHeight)
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.background),
         verticalAlignment = Alignment.CenterVertically,
@@ -73,7 +72,7 @@ fun EmptyHeader(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun EmptyHeaderPreview() {
-    BalinaSoftTestAppTheme {
+    com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme {
         EmptyHeader()
     }
 }
@@ -85,7 +84,7 @@ fun BackHeader(
 ) {
     Row(
         modifier = modifier
-            .height(headerHeight)
+            .height(com.globa.balinasofttestapp.common.ui.theme.headerHeight)
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.background),
         verticalAlignment = Alignment.CenterVertically,
@@ -106,7 +105,7 @@ fun BackHeader(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun BackHeaderPreview() {
-    BalinaSoftTestAppTheme {
+    com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme {
         BackHeader {}
     }
 }

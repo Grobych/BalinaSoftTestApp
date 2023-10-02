@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.Surface
@@ -21,10 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.globa.balinasofttestapp.R
-import com.globa.balinasofttestapp.ui.theme.BalinaSoftTestAppTheme
+import com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDrawerContent(
     drawerState: DrawerState,
@@ -77,7 +75,6 @@ fun AppDrawerContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun AppDrawerContentPreview() {
