@@ -43,7 +43,6 @@ fun PhotoListScreen(
     val coroutineScope = rememberCoroutineScope()
     val uiState = viewModel.photosUiState.collectAsState()
 
-    val refresh = fun() {viewModel.refresh()}
     Scaffold(
         topBar = {
             MenuHeader {
@@ -100,45 +99,66 @@ private fun DonePhotoListScreen(
     photos: LazyPagingItems<Photo>,
     onPhotoClick: (Int) -> Unit
 ) {
-    when(photos.loadState.refresh) {
-        is LoadState.Loading -> {
-            LoadingAnimation(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp))
-        }
-        is LoadState.Error -> {
-            val error = photos.loadState.refresh as LoadState.Error
-            ErrorPhotoListScreen(
-                modifier = Modifier.fillMaxSize(),
-                errorMessage = error.error.localizedMessage!!
-            )
-        }
-        is LoadState.NotLoading -> {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                modifier = modifier
-            ) {
-                items(photos.itemCount) { index ->
-                    val photo = photos[index]
-                    photo?.let {
-                        Column{
-                            AsyncImage(
-                                modifier = Modifier
-                                    .size(100.dp)
-                                    .clickable {
-                                        onPhotoClick(it.id)
-                                    },
-                                model = it.url,
-                                contentDescription = "Photo ${it.id}"
-                            )
-                            Text(text = DateFormatter.getSimpleDate(it.date))
-                        }
-                    }
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        modifier = modifier
+    ) {
+        items(photos.itemCount) { index ->
+            val photo = photos[index]
+            photo?.let {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    AsyncImage(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clickable {
+                                onPhotoClick(it.id)
+                            },
+                        model = it.url,
+                        contentDescription = "Photo ${it.id}"
+                    )
+                    Text(text = DateFormatter.getSimpleDate(it.date))
                 }
             }
         }
+        when(val state = photos.loadState.refresh) {
+            is LoadState.Loading -> item {
+                LoadingAnimation(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp))
+            }
+            is LoadState.Error -> item {
+                ErrorPhotoListScreen(
+                    modifier = Modifier.fillMaxSize(),
+                    errorMessage = state.error.localizedMessage!!
+                )
+            }
+            is LoadState.NotLoading -> item {
+
+            }
+        }
+        when(val state = photos.loadState.append) {
+            is LoadState.Loading -> item {
+                LoadingAnimation(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp))
+            }
+            is LoadState.Error -> item {
+                ErrorPhotoListScreen(
+                    modifier = Modifier.fillMaxSize(),
+                    errorMessage = state.error.localizedMessage!!
+                )
+            }
+            is LoadState.NotLoading -> item {
+
+            }
+        }
     }
+
 }
 
 @Preview
