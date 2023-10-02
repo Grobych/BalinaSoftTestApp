@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.globa.balinasofttestapp.MapScreen
-import com.globa.balinasofttestapp.PhotoListScreen
+import com.globa.balinasofttestapp.photos.PhotoListScreen
 import com.globa.balinasofttestapp.login.AuthorizationScreen
 
 fun NavGraphBuilder.mainGraph(drawerState: DrawerState) {

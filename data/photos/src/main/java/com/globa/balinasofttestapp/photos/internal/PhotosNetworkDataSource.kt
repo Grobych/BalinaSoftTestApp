@@ -1,6 +1,6 @@
 package com.globa.balinasofttestapp.photos.internal
 
-import com.globa.balinasofttestapp.common.IoDispatcher
+import com.globa.balinasofttestapp.common.di.IoDispatcher
 import com.globa.balinasofttestapp.network.api.ImagesNetworkApi
 import com.globa.balinasofttestapp.network.api.model.NetworkResponse
 import com.globa.balinasofttestapp.photos.api.model.Photo

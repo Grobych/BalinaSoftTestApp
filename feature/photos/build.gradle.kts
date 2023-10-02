@@ -1,26 +1,19 @@
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
-
 }
 
 android {
-    namespace = "com.globa.balinasofttestapp"
+    namespace = "com.globa.balinasofttestapp.photos"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.globa.balinasofttestapp"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -43,37 +36,26 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+        kotlinCompilerExtensionVersion = "1.4.4"
     }
 }
 
 dependencies {
-    implementation(project(path = ":data:location"))
-    implementation(project(path = ":data:login")) //TODO: remove?
-    implementation(project(path = ":feature:login"))
-    implementation(project(path = ":feature:photos"))
+    implementation(project(path = ":data:photos"))
+    implementation(project(path = ":data:login"))
     implementation(project(path = ":common"))
 
-    implementation(libs.accompanist)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.lifecycle.viewmodel)
 
     implementation(libs.hilt.core)
     kapt(libs.hilt.compiler)
 
-    implementation (libs.lifecycle.viewmodel)
-    implementation(libs.bundles.navigation)
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-
-    implementation(libs.androidx.activity.compose)
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     implementation(libs.compose.material3)
+
+    implementation(libs.bundles.navigation)
 
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
