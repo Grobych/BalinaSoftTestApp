@@ -1,0 +1,51 @@
+package com.globa.balinasofttestapp.photos
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.globa.balinasofttestapp.login.api.AuthData
+import com.globa.balinasofttestapp.login.api.LoginRepository
+import com.globa.balinasofttestapp.photos.api.PhotosRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class PhotoListViewModel @Inject constructor(
+    private val photosRepository: PhotosRepository,
+    private val loginRepository: LoginRepository
+): ViewModel() {
+    fun refresh() {
+
+    }
+
+    private val _photosUiState = MutableStateFlow<PhotosUiState>(PhotosUiState.Loading)
+    val photosUiState = _photosUiState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            loginRepository.getLoginStatus()
+                .onEach { authData ->
+                    when (authData) {
+                        is AuthData.Success -> {
+                            if (authData.token.isNotEmpty()) {
+                                _photosUiState.value = PhotosUiState.Done(photosRepository.getPhotos(authData.token))
+                            } else {
+                                _photosUiState.update {
+                                    PhotosUiState.Error(message = "Not authorized: no token!")
+                                }
+                            }
+                        }
+                        is AuthData.Error -> {
+                            _photosUiState.update {
+                                PhotosUiState.Error(message = "Not authorized: ${authData.message}!")
+                            }
+                        }
+                    }
+                }
+        }
+    }
+}

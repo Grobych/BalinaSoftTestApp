@@ -6,6 +6,7 @@ androidxComposeBom = "2023.09.01"
 compose-material = "1.9.0"
 compose-material3 = "1.1.2"
 compose-ui = "1.5.1"
+coil = "2.3.0"
 coreKtx = "1.12.0"
 dagger = "2.46.1"
 datastore = "1.0.0"
@@ -96,6 +97,10 @@ system-ui-controller = { module = "com.google.accompanist:accompanist-systemuico
 gson = { module = "com.google.code.gson:gson", version.ref = "gson"}
 gson-converter = { module = "com.squareup.retrofit2:converter-gson", version.ref = "gson"}
 
+# Coil
+coil = { module = "io.coil-kt:coil", version.ref = "coil"}
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil"}
+
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -112,4 +117,5 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 [bundles]
 navigation = ["navigation-android","navigation-hilt"]
 mockk = ["mockk-android","mockk-agent"]
+coil = ["coil", "coil-compose"]
 

@@ -45,6 +45,9 @@ dependencies {
     implementation(project(path = ":data:login"))
     implementation(project(path = ":common"))
 
+    implementation(libs.paging.core)
+    implementation(libs.paging.compose)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.lifecycle.viewmodel)
 
@@ -56,6 +59,8 @@ dependencies {
     implementation(libs.compose.material3)
 
     implementation(libs.bundles.navigation)
+
+    implementation(libs.bundles.coil)
 
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
