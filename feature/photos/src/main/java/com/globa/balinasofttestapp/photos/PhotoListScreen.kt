@@ -1,5 +1,6 @@
 package com.globa.balinasofttestapp.photos
 
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,10 +28,12 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
+import com.globa.balinasofttestapp.camera.CreatePhotoFloatingButton
 import com.globa.balinasofttestapp.common.ui.composable.LoadingAnimation
 import com.globa.balinasofttestapp.common.ui.composable.MenuHeader
 import com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme
 import com.globa.balinasofttestapp.common.util.DateFormatter
+import com.globa.balinasofttestapp.common.util.readUri
 import com.globa.balinasofttestapp.photos.api.model.Photo
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -43,6 +47,11 @@ fun PhotoListScreen(
     val coroutineScope = rememberCoroutineScope()
     val uiState = viewModel.photosUiState.collectAsState()
 
+    val context = LocalContext.current
+    val uploadPicture = fun(uri: Uri) {
+        viewModel.uploadPhoto(readUri(context,uri))
+    }
+
     Scaffold(
         topBar = {
             MenuHeader {
@@ -50,6 +59,11 @@ fun PhotoListScreen(
                     drawerState.open()
                 }
             }
+        },
+        floatingActionButton = {
+            CreatePhotoFloatingButton(
+                onPhotoCaptured = uploadPicture
+            )
         }
     ) {
         when (val state = uiState.value) {

@@ -2,12 +2,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
 }
 
 android {
-    namespace = "com.globa.balinasofttestapp.photos"
-    compileSdk = 34
+    namespace = "com.globa.balinasofttestapp.camera"
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 24
@@ -41,29 +40,19 @@ android {
 }
 
 dependencies {
-    implementation(project(path = ":data:photos"))
-    implementation(project(path = ":data:login"))
-    implementation(project(path = ":data:location"))
     implementation(project(path = ":common"))
-    implementation(project(path = ":feature:camera"))
-
-    implementation(libs.paging.core)
-    implementation(libs.paging.compose)
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.androidx.activity.compose)
 
-    implementation(libs.hilt.core)
-    kapt(libs.hilt.compiler)
 
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     implementation(libs.compose.material3)
 
-    implementation(libs.bundles.navigation)
-
-    implementation(libs.bundles.coil)
-
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
 }

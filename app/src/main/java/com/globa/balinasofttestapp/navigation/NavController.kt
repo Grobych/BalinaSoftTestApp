@@ -12,7 +12,10 @@ import com.globa.balinasofttestapp.login.AuthorizationScreen
 fun NavGraphBuilder.mainGraph(drawerState: DrawerState) {
     navigation(startDestination = NavItem.PhotoListScreen.name, route = NavRoutes.MainRoute.name) {
         composable(NavItem.PhotoListScreen.name){
-            PhotoListScreen(drawerState)
+            val onPhotoClick = fun(id: Int) {}
+            PhotoListScreen(
+                drawerState = drawerState,
+                onPhotoClick = onPhotoClick)
         }
         composable(NavItem.PhotoDetailsScreen.name){
             PhotoDetailsScreen(drawerState)
