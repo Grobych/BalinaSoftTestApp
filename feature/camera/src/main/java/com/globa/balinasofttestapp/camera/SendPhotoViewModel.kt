@@ -7,6 +7,7 @@ import com.globa.balinasofttestapp.location.api.LocationResponse
 import com.globa.balinasofttestapp.login.api.AuthData
 import com.globa.balinasofttestapp.login.api.LoginRepository
 import com.globa.balinasofttestapp.photos.api.PhotosRepository
+import com.globa.balinasofttestapp.photos.api.model.Response
 import com.globa.balinasofttestapp.photos.api.model.UploadPhoto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -62,11 +63,14 @@ class SendPhotoViewModel @Inject constructor(
                     val token = _token.value
                     if (token != null) {
                         _uiState.update { SendPhotoUiState.Sending }
-                        photosRepository.uploadPhoto(
+                        val response = photosRepository.uploadPhoto(
                             token = token,
                             photo = image
                         )
-                        _uiState.update { SendPhotoUiState.Done }
+                        when (response) {
+                            is Response.Error -> _uiState.update { SendPhotoUiState.Error(response.message) }
+                            is Response.Success -> _uiState.update { SendPhotoUiState.Done }
+                        }
                     }
                 }
             }
