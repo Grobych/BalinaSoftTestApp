@@ -24,13 +24,11 @@ class LocationDataSource @Inject constructor(
         override fun isCancellationRequested() = false
     }
     @SuppressLint("MissingPermission")
-    suspend fun getCurrentLocation(): LocationResponse {
-        lateinit var response: LocationResponse
+    suspend fun getCurrentLocation(): LocationResponse = withContext(coroutineDispatcher) {
         val task = fusedLocationProviderClient
             .getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cancellationToken)
-            .addOnSuccessListener { response = LocationResponse.Success(it) }
-            .addOnFailureListener { response = LocationResponse.Error(it.message?: "Unknown error") }
-        withContext(coroutineDispatcher) { Tasks.await(task) }
-        return response
+        val result = Tasks.await(task)
+        if (result != null) LocationResponse.Success(result)
+        else LocationResponse.Error("Location error")
     }
 }
