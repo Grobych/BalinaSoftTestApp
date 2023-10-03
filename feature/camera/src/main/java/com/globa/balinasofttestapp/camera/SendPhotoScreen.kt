@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.globa.balinasofttestapp.common.ui.composable.BackHeader
 import com.globa.balinasofttestapp.common.ui.composable.LoadingAnimation
 import com.globa.balinasofttestapp.common.ui.composable.permissions.LocationPermissions
 import com.globa.balinasofttestapp.common.util.readUri
@@ -38,8 +39,13 @@ fun SendPhotoScreen(
     onBackButtonClick: () -> Unit
 ) {
     LocationPermissions {
-        SendPhotoScreenContent {
-            onBackButtonClick()
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            BackHeader(onBackButtonClick = onBackButtonClick)
+            SendPhotoScreenContent {
+                onBackButtonClick()
+            }
         }
     }
 }
