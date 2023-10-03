@@ -44,4 +44,5 @@ dependencies {
 
     implementation(project(path = ":network"))
     implementation(project(path = ":common"))
+    implementation(project(path = ":database"))
 }

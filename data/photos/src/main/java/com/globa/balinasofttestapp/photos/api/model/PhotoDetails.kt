@@ -1,6 +1,6 @@
 package com.globa.balinasofttestapp.photos.api.model
 
-data class PhotoResponse(
+data class PhotoDetails(
     val id: Int,
     val url: String,
     val date: Long,

@@ -5,8 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.globa.balinasofttestapp.network.api.model.NetworkResponse
 import com.globa.balinasofttestapp.photos.api.PhotosRepository
-import com.globa.balinasofttestapp.photos.api.model.Photo
-import com.globa.balinasofttestapp.photos.api.model.PhotoResponse
+import com.globa.balinasofttestapp.photos.api.model.PhotoDetails
 import com.globa.balinasofttestapp.photos.api.model.Response
 import com.globa.balinasofttestapp.photos.api.model.UploadPhoto
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +16,7 @@ import javax.inject.Singleton
 internal class PhotosRepositoryImpl @Inject constructor(
     private val photosNetworkDataSource: PhotosNetworkDataSource
 ): PhotosRepository {
-    override suspend fun getPhotos(token: String): Flow<PagingData<Photo>> = Pager(
+    override suspend fun getPhotos(token: String): Flow<PagingData<PhotoDetails>> = Pager(
         config = PagingConfig(pageSize = 20),
         pagingSourceFactory = {
             PhotosPagingSource(
@@ -27,16 +26,16 @@ internal class PhotosRepositoryImpl @Inject constructor(
         }
     ).flow
 
-    override suspend fun getPhoto(token: String, id: Int): Response<Photo> {
+    override suspend fun getPhoto(token: String, id: Int): Response<PhotoDetails> {
         return photosNetworkDataSource.getPhotoById(token, id)
     }
 
-    override suspend fun uploadPhoto(token: String, photo: UploadPhoto): Response<PhotoResponse> {
+    override suspend fun uploadPhoto(token: String, photo: UploadPhoto): Response<PhotoDetails> {
         return when (val response = photosNetworkDataSource.uploadPhoto(token, photo)) {
             is NetworkResponse.Error -> Response.Error(response.message)
             is NetworkResponse.Exception -> Response.Error(response.e.toString())
             is NetworkResponse.Success -> Response.Success(
-                PhotoResponse(
+                PhotoDetails(
                     id = response.data.body.id,
                     url = response.data.body.url,
                     date = response.data.body.date,
