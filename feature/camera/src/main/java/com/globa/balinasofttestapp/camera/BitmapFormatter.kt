@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream
 object BitmapFormatter {
     private const val maxSize = 1280
     private const val miB = 1024*1024
+
+    fun createBitmap(byteArray: ByteArray): Bitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.size)
     private fun resizeBitmap(image: Bitmap, maxHeight: Int, maxWidth: Int): Bitmap {
         if (maxHeight > 0 && maxWidth > 0) {
 

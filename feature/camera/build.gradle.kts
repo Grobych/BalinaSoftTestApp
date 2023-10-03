@@ -2,6 +2,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -41,9 +42,16 @@ android {
 
 dependencies {
     implementation(project(path = ":common"))
+    implementation(project(path = ":data:photos"))
+    implementation(project(path = ":data:location"))
+    implementation(project(path = ":data:login"))
+
+    implementation(libs.hilt.core)
+    kapt(libs.hilt.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.bundles.navigation)
 
 
     val composeBom = platform(libs.androidx.compose.bom)

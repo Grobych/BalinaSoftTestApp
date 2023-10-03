@@ -57,6 +57,7 @@ dependencies {
     implementation(project(path = ":data:login")) //TODO: remove?
     implementation(project(path = ":feature:login"))
     implementation(project(path = ":feature:photos"))
+    implementation(project(path = ":feature:camera"))
     implementation(project(path = ":common"))
 
     implementation(libs.accompanist)

@@ -17,6 +17,7 @@ import com.globa.balinasofttestapp.navigation.NavRoutes
 import com.globa.balinasofttestapp.navigation.loginGraph
 import com.globa.balinasofttestapp.navigation.mainGraph
 import com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme
+import com.globa.balinasofttestapp.navigation.cameraGraph
 
 @Composable
 fun MainScreen(
@@ -50,13 +51,14 @@ fun MainScreen(
                     }
                 }
             ) {
-                val isLogin = viewModel.isAuthorized.collectAsState(initial = true) //TODO: rewrite with suspend/loading anim
+                val isLogin = viewModel.isAuthorized.collectAsState(initial = false) //TODO: rewrite with suspend/loading anim
                 NavHost(
                     navController,
                     startDestination = if (isLogin.value) NavRoutes.MainRoute.name else NavRoutes.LoginRoute.name
                 ) {
-                    mainGraph(drawerState)
+                    mainGraph(drawerState, navController)
                     loginGraph(navController)
+                    cameraGraph(navController)
                 }
             }
         }

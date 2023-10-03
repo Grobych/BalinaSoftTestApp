@@ -6,16 +6,26 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.globa.balinasofttestapp.MapScreen
+import com.globa.balinasofttestapp.camera.SendPhotoScreen
 import com.globa.balinasofttestapp.photos.PhotoListScreen
 import com.globa.balinasofttestapp.login.AuthorizationScreen
 
-fun NavGraphBuilder.mainGraph(drawerState: DrawerState) {
+fun NavGraphBuilder.mainGraph(
+    drawerState: DrawerState,
+    navController: NavController
+) {
     navigation(startDestination = NavItem.PhotoListScreen.name, route = NavRoutes.MainRoute.name) {
         composable(NavItem.PhotoListScreen.name){
+            val navigateToCamera = fun() {
+                navController.navigate(NavRoutes.CameraRoute.name) {
+                    popUpTo(NavItem.PhotoListScreen.name)
+                }
+            }
             val onPhotoClick = fun(id: Int) {}
             PhotoListScreen(
                 drawerState = drawerState,
-                onPhotoClick = onPhotoClick)
+                onPhotoClick = onPhotoClick,
+                navigateToCamera = navigateToCamera)
         }
         composable(NavItem.PhotoDetailsScreen.name){
             PhotoDetailsScreen(drawerState)
@@ -23,7 +33,6 @@ fun NavGraphBuilder.mainGraph(drawerState: DrawerState) {
         composable(NavItem.MapScreen.name){
             MapScreen(drawerState)
         }
-
     }
 }
 
@@ -36,11 +45,21 @@ fun NavGraphBuilder.loginGraph(navController: NavController) {
     }
 }
 
+fun NavGraphBuilder.cameraGraph(navController: NavController) {
+    val navigateToBack = fun() {navController.popBackStack()}
+    navigation(startDestination = NavItem.CameraScreen.name, route = NavRoutes.CameraRoute.name) {
+        composable(NavItem.CameraScreen.name){
+            SendPhotoScreen(onBackButtonClick = navigateToBack)
+        }
+    }
+}
+
 enum class NavRoutes {
     MainRoute,
-    LoginRoute
+    LoginRoute,
+    CameraRoute
 }
 
 enum class NavItem {
-    LoginScreen, PhotoListScreen, PhotoDetailsScreen, MapScreen
+    LoginScreen, PhotoListScreen, PhotoDetailsScreen, MapScreen, CameraScreen
 }

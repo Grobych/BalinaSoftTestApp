@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.hilt.core)
     kapt(libs.hilt.compiler)
 
+    implementation(libs.accompanist)
     implementation(libs.location)
 
     val composeBom = platform(libs.androidx.compose.bom)
