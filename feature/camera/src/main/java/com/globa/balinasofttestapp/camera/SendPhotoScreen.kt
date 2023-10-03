@@ -54,7 +54,9 @@ fun SendPhotoScreenContent(
     val context = LocalContext.current
 
     val onPhotoCaptured = fun(uri: Uri) {
-        viewModel.onPhotoCaptured(readUri(context,uri))
+        val bytes = readUri(context, uri)
+        if (bytes != null) viewModel.onPhotoCaptured(bytes)
+        else onBackButtonClick()
     }
 
     val onSendButtonClick = fun() {
