@@ -19,12 +19,12 @@ internal class PhotosPagingSource @Inject constructor(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         return try {
-            val page = params.key ?: 1
+            val page = params.key ?: 0
             when (val response = dataSource.getPhotos(token = token, page = page)) {
                 is Response.Success -> {
                     LoadResult.Page(
                         data = response.data,
-                        prevKey = if (page == 1) null else page.minus(1),
+                        prevKey = if (page == 0) null else page.minus(1),
                         nextKey = if (response.data.isEmpty()) null else page.plus(1)
                     )
                 }

@@ -10,7 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,7 +36,7 @@ class PhotoListViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             loginRepository.getLoginStatus()
-                .onEach { authData ->
+                .collect { authData ->
                     when (authData) {
                         is AuthData.Success -> {
                             if (authData.token.isNotEmpty()) {
