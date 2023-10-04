@@ -58,6 +58,7 @@ dependencies {
     implementation(project(path = ":feature:login"))
     implementation(project(path = ":feature:photos"))
     implementation(project(path = ":feature:camera"))
+    implementation(project(path = ":feature:photodetails"))
     implementation(project(path = ":common"))
 
     implementation(libs.accompanist)

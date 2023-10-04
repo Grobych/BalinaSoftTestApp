@@ -9,6 +9,7 @@ import com.globa.balinasofttestapp.photos.api.model.PhotoDetails
 import com.globa.balinasofttestapp.photos.api.model.Response
 import com.globa.balinasofttestapp.photos.api.model.UploadPhoto
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,8 +29,10 @@ internal class PhotosRepositoryImpl @Inject constructor(
         }
     ).flow
 
-    override suspend fun getPhoto(token: String, id: Int): Response<PhotoDetails> {
-        return photosNetworkDataSource.getPhotoById(token, id)
+    override suspend fun getPhoto(id: Int): Flow<Response<PhotoDetails>> {
+        return photosLocalDataSource
+            .getPhoto(id)
+            .map { Response.Success(data = it) }
     }
 
     override suspend fun uploadPhoto(token: String, photo: UploadPhoto): Response<PhotoDetails> {
