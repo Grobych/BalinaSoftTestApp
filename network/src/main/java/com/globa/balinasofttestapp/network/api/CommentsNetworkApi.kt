@@ -32,5 +32,5 @@ interface CommentsNetworkApi {
         @Header("Access-Token") token: String,
         @Path("imageId") imageId: Int,
         @Path("commentId") commentId: Int
-    )
+    ): NetworkResponse<Resource<Comment>>
 }

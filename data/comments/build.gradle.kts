@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.globa.balinasofttesrapp.database"
+    namespace = "com.globa.balinasofttestapp.comments"
     compileSdk = 34
 
     defaultConfig {
@@ -38,12 +38,11 @@ dependencies {
     implementation(libs.hilt.core)
     kapt(libs.hilt.compiler)
 
-    implementation(libs.gson)
+    implementation(libs.retrofit)
 
     implementation(libs.paging.core)
 
-    implementation(libs.room)
-    api(libs.room.runtime)
-    //noinspection KaptUsageInsteadOfKsp
-    kapt(libs.room.compiler)
+    implementation(project(path = ":network"))
+    implementation(project(path = ":common"))
+    implementation(project(path = ":database"))
 }
