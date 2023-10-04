@@ -9,3 +9,8 @@ sealed class PhotosUiState {
     data class Done(val photos: Flow<PagingData<Photo>>): PhotosUiState()
     data class Error(val message: String): PhotosUiState()
 }
+
+sealed class DeletePhotoUiState {
+    object NoRequest: DeletePhotoUiState()
+    data class RequestToRemove(val id: Int): DeletePhotoUiState()
+}

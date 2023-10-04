@@ -25,6 +25,10 @@ class PhotosLocalDataSource @Inject constructor(
     suspend fun getPhoto(id: Int): Flow<PhotoDetails> = withContext(coroutineDispatcher) {
         database.photosDao.getPhotoById(id).map { it.asDomainModel() }
     }
+
+    suspend fun removePhoto(id: Int): Int = withContext(coroutineDispatcher) {
+        database.photosDao.removePhoto(PhotoDBModel(id = id))
+    }
 }
 
 fun PhotoDetails.asDBModel() : PhotoDBModel =

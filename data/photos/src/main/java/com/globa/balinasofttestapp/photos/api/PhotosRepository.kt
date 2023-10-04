@@ -10,5 +10,5 @@ interface PhotosRepository {
     suspend fun getPhotos(token: String): Flow<PagingData<PhotoDetails>>
     suspend fun getPhoto(token: String, id: Int): Response<PhotoDetails>
     suspend fun uploadPhoto(token: String, photo: UploadPhoto): Response<PhotoDetails>
-    suspend fun removePhoto(token: String, id: Int)
+    suspend fun removePhoto(token: String, id: Int): Response<Boolean>
 }

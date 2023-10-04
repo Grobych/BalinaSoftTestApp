@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 data class PhotoDBModel(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
-    val url: String,
-    val date: Long,
-    val latitude: Double,
-    val longitude: Double
+    val url: String = "",
+    val date: Long = 0,
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0
 )

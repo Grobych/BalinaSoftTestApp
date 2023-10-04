@@ -48,8 +48,12 @@ internal class PhotosRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun removePhoto(token: String, id: Int) {
-        photosNetworkDataSource.removePhoto(token, id)
+    override suspend fun removePhoto(token: String, id: Int): Response<Boolean> {
+        val networkResponse = photosNetworkDataSource.removePhoto(token, id)
+        val databaseResponse = photosLocalDataSource.removePhoto(id)
+        return if (networkResponse is NetworkResponse.Success && databaseResponse != 0)
+            Response.Success(true)
+        else Response.Error(message = "Delete error")
     }
 
 }

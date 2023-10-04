@@ -1,6 +1,7 @@
 package com.globa.balinasofttestapp.photos
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -44,6 +47,24 @@ fun PhotoListScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val uiState = viewModel.photosUiState.collectAsState()
+    val deletePhotoUiState = viewModel.deletePhotoUiState.collectAsState()
+
+    if (deletePhotoUiState.value is DeletePhotoUiState.RequestToRemove) {
+        AlertDialog(
+            text = { Text(text = "Delete this photo?")},
+            dismissButton = { Button(onClick = { viewModel.onDeleteRequestDenied() }) {
+                Text(text = "Cancel")
+            } },
+            onDismissRequest = { viewModel.onDeleteRequestDenied() },
+            confirmButton = { Button(onClick = { viewModel.onDeleteRequestApproved() }) {
+                Text(text = "Ok")
+            } }
+        )
+    }
+
+    val requestToRemove = fun(id: Int) {
+        viewModel.requestToRemovePhoto(id)
+    }
 
     Scaffold(
         topBar = {
@@ -74,7 +95,8 @@ fun PhotoListScreen(
                         .fillMaxSize()
                         .padding(it),
                     photos = photos,
-                    onPhotoClick = onPhotoClick
+                    onPhotoClick = onPhotoClick,
+                    onPhotoLongClick = requestToRemove
                 )
             }
         }
@@ -98,11 +120,13 @@ private fun ErrorPhotoListScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DonePhotoListScreen(
     modifier: Modifier = Modifier,
     photos: LazyPagingItems<Photo>,
-    onPhotoClick: (Int) -> Unit
+    onPhotoClick: (Int) -> Unit,
+    onPhotoLongClick: (Int) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -118,9 +142,10 @@ private fun DonePhotoListScreen(
                     AsyncImage(
                         modifier = Modifier
                             .size(100.dp)
-                            .clickable {
-                                onPhotoClick(it.id)
-                            },
+                            .combinedClickable(
+                                onClick = { onPhotoClick(it.id) },
+                                onLongClick = { onPhotoLongClick(it.id) }
+                            ),
                         model = it.url,
                         contentDescription = "Photo ${it.id}"
                     )
@@ -201,6 +226,6 @@ fun DonePhotoListScreenPreview() {
                 )
             )
         ).collectAsLazyPagingItems()
-        DonePhotoListScreen(photos = photos, onPhotoClick = {})
+        DonePhotoListScreen(photos = photos, onPhotoClick = {}, onPhotoLongClick = {})
     }
 }
