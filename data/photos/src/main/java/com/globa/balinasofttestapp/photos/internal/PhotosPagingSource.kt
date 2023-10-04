@@ -4,10 +4,10 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.globa.balinasofttestapp.photos.api.model.PhotoDetails
 import com.globa.balinasofttestapp.photos.api.model.Response
-import javax.inject.Inject
 
-internal class PhotosPagingSource @Inject constructor(
-    private val dataSource: PhotosNetworkDataSource,
+internal class PhotosPagingSource(
+    private val networkDataSource: PhotosNetworkDataSource,
+    private val localDataSource: PhotosLocalDataSource,
     private val token: String
 ): PagingSource<Int, PhotoDetails>() {
     override fun getRefreshKey(state: PagingState<Int, PhotoDetails>): Int? {
@@ -20,8 +20,9 @@ internal class PhotosPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PhotoDetails> {
         return try {
             val page = params.key ?: 0
-            when (val response = dataSource.getPhotos(token = token, page = page)) {
+            when (val response = networkDataSource.getPhotos(token = token, page = page)) {
                 is Response.Success -> {
+                    localDataSource.savePhotos(response.data)
                     LoadResult.Page(
                         data = response.data,
                         prevKey = if (page == 0) null else page.minus(1),

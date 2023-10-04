@@ -14,13 +14,15 @@ import javax.inject.Singleton
 
 @Singleton
 internal class PhotosRepositoryImpl @Inject constructor(
-    private val photosNetworkDataSource: PhotosNetworkDataSource
+    private val photosNetworkDataSource: PhotosNetworkDataSource,
+    private val photosLocalDataSource: PhotosLocalDataSource
 ): PhotosRepository {
     override suspend fun getPhotos(token: String): Flow<PagingData<PhotoDetails>> = Pager(
         config = PagingConfig(pageSize = 20),
         pagingSourceFactory = {
             PhotosPagingSource(
-                dataSource = photosNetworkDataSource,
+                networkDataSource = photosNetworkDataSource,
+                localDataSource = photosLocalDataSource,
                 token = token
             )
         }
