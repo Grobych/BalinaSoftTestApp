@@ -1,4 +1,4 @@
-package com.globa.balinasofttestapp.photos.internal
+package com.globa.balinasofttestapp.photos.internal.photos
 
 import com.globa.balinasofttestapp.common.di.IoDispatcher
 import com.globa.balinasofttestapp.network.api.ImagesNetworkApi

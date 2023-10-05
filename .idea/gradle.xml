@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/camera" />
             <option value="$PROJECT_DIR$/feature/login" />
+            <option value="$PROJECT_DIR$/feature/map" />
             <option value="$PROJECT_DIR$/feature/photodetails" />
             <option value="$PROJECT_DIR$/feature/photos" />
             <option value="$PROJECT_DIR$/network" />

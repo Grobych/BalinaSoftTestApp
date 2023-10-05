@@ -1,4 +1,4 @@
-package com.globa.balinasofttestapp.photos.internal
+package com.globa.balinasofttestapp.photos.internal.photos
 
 import com.globa.balinasofttesrapp.database.api.PhotosDatabase
 import com.globa.balinasofttesrapp.database.api.model.PhotoDBModel

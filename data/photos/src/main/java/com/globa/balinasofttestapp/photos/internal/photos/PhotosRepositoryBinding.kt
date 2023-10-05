@@ -1,4 +1,4 @@
-package com.globa.balinasofttestapp.photos.internal
+package com.globa.balinasofttestapp.photos.internal.photos
 
 import com.globa.balinasofttestapp.photos.api.PhotosRepository
 import dagger.Binds

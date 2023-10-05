@@ -16,6 +16,8 @@ kotlin-coroutines = "1.7.1"
 lifecycle = "2.6.2"
 lifecycleRuntimeKtx = "2.6.2"
 location = "21.0.1"
+maps = "18.1.0"
+maps-compose = "2.7.2"
 mockk = "1.13.5"
 navigation = "2.7.3"
 navigation-hilt = "1.0.0"
@@ -110,6 +112,10 @@ datastore-preferences = { module = "androidx.datastore:datastore-preferences", v
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore"}
 datastore-proto = { module = "androidx.datastore:datastore", version.ref = "datastore"}
 
+# Maps
+maps = { module = "com.google.android.gms:play-services-maps" , version.ref = "maps"}
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "maps-compose" }
+
 [plugins]
 com-android-library = { id = "com.android.library", version.ref = "agp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
@@ -118,4 +124,5 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 navigation = ["navigation-android","navigation-hilt"]
 mockk = ["mockk-android","mockk-agent"]
 coil = ["coil", "coil-compose"]
+maps = ["maps", "maps-compose"]
 

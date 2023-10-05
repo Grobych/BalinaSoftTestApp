@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.globa.balinasofttesrapp.database.api.model.PhotoDBModel
+import com.globa.balinasofttesrapp.database.api.model.PhotoLocationDBModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -20,4 +21,6 @@ interface PhotosDao {
     fun insertAll(photo : List<PhotoDBModel>)
     @Delete
     fun removePhoto(photo: PhotoDBModel): Int
+    @Query("select id, latitude, longitude from photos")
+    fun getPhotoLocations(): Flow<List<PhotoLocationDBModel>>
 }

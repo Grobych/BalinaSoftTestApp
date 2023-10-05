@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.globa.balinasofttestapp.MapScreen
 import com.globa.balinasofttestapp.camera.SendPhotoScreen
+import com.globa.balinasofttestapp.map.MapScreen
 import com.globa.balinasofttestapp.photos.PhotoListScreen
 import com.globa.balinasofttestappphotodetails.PhotoDetailScreen
 
@@ -39,6 +39,7 @@ fun DrawerNavController(
 
     ModalNavigationDrawer(
         drawerState = drawerState,
+        gesturesEnabled = false,
         drawerContent = {
             AppDrawerContent(
                 drawerState = drawerState,
@@ -84,7 +85,10 @@ fun DrawerNavController(
             composable(
                 route = NavRoutes.Map.name
             ) {
-                MapScreen(drawerState = drawerState)
+                MapScreen(
+                    drawerState = drawerState,
+                    onMarkerCLick = navigateToPhotoDetails
+                )
             }
         }
     }
