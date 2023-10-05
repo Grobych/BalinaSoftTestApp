@@ -44,7 +44,10 @@ internal class CommentsNetworkDataSource @Inject constructor(
             when (val result = api.deleteComment(token = token, imageId = imageId, commentId = commentId)) {
                 is NetworkResponse.Error -> Response.Error(result.message)
                 is NetworkResponse.Exception -> Response.Error(result.e.toString())
-                is NetworkResponse.Success -> Response.Success(result.data.body.asDomainModel())
+                is NetworkResponse.Success -> {
+                    if (result.data.body == null) Response.Success(Comment(id = commentId, date = 0L, text = "")) //love this api {"status":200,"data":null}
+                    else Response.Success(result.data.body.asDomainModel())
+                }
             }
         }
 }

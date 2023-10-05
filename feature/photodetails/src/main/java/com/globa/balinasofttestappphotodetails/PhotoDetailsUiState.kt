@@ -12,6 +12,6 @@ sealed class PhotoDetailsUiState {
 }
 sealed class CommentsUiState {
     object Loading: CommentsUiState()
-    data class Done(val comments: Flow<PagingData<Comment>>): CommentsUiState()
+    data class Done(val comments: Flow<PagingData<Comment>>, val showDeleteDialog: Boolean = false): CommentsUiState()
     data class Error(val message: String): CommentsUiState()
 }

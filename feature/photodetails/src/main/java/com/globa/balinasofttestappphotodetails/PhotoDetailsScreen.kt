@@ -1,7 +1,9 @@
 package com.globa.balinasofttestappphotodetails
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +16,8 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -57,6 +61,24 @@ fun PhotoDetailScreen(
         viewModel.onCommentTextFieldChange(text)
     }
 
+    if (commentsUiState.value is CommentsUiState.Done) {
+        if ((commentsUiState.value as CommentsUiState.Done).showDeleteDialog)
+            AlertDialog(
+                text = { Text(text = "Delete comment?")},
+                dismissButton = { Button(onClick = { viewModel.onRequestDenied() }) {
+                    Text(text = "Cancel")
+                } },
+                onDismissRequest = { viewModel.onRequestDenied() },
+                confirmButton = { Button(onClick = { viewModel.onRequestApproved() }) {
+                    Text(text = "Ok")
+                } }
+            )
+    }
+
+    val requestToRemove = fun(id: Int) {
+        viewModel.requestToRemoveComment(id)
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -82,7 +104,8 @@ fun PhotoDetailScreen(
                 is CommentsUiState.Done -> {
                     val comments = state.comments.collectAsLazyPagingItems()
                     CommentsScreen(
-                        comments = comments
+                        comments = comments,
+                        onCommentLongClick = requestToRemove
                     )
                 }
                 is CommentsUiState.Error -> ErrorPhotoDetailsScreen(errorMessage = state.message)
@@ -122,10 +145,12 @@ fun DonePhotoDetailsScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CommentsScreen(
     modifier: Modifier = Modifier,
-    comments: LazyPagingItems<Comment>
+    comments: LazyPagingItems<Comment>,
+    onCommentLongClick: (Int) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -142,6 +167,10 @@ fun CommentsScreen(
                             .fillMaxWidth()
                             .height(60.dp)
                             .background(color = MaterialTheme.colorScheme.primaryContainer)
+                            .combinedClickable(
+                                onClick = {},
+                                onLongClick = { onCommentLongClick(comment.id)}
+                            )
                     ) {
                         Text(
                             modifier = Modifier.align(Alignment.CenterStart),

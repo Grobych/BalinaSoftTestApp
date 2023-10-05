@@ -35,6 +35,7 @@ class PhotoDetailsViewModel @Inject constructor(
 
     private val photoId = savedStateHandle.get<Int>("photoId")
     private val _token = MutableStateFlow<String?>(null)
+    private val _commentToRemove = MutableStateFlow<Int?>(null)
 
     init {
         getToken()
@@ -65,7 +66,7 @@ class PhotoDetailsViewModel @Inject constructor(
                 if (token != null && photoId != null){
                     _commentsUiState.value = CommentsUiState.Done(
                         commentsRepository.getComments(token = token, imageId = photoId)
-                    )
+                    ) //TODO: rewrite
                 }
             }
         }
@@ -107,5 +108,40 @@ class PhotoDetailsViewModel @Inject constructor(
     fun onCommentTextFieldChange(text: String) {
 //        if (commentsUiState.value is CommentsUiState.Done)
             _commentTextFieldState.value = text
+    }
+
+    fun requestToRemoveComment(id: Int) {
+        _commentToRemove.value = id
+        val state = commentsUiState.value
+        if (state is CommentsUiState.Done) {
+            _commentsUiState.update {
+                state.copy(showDeleteDialog = true)
+            }
+        }
+    }
+
+    fun onRequestApproved() {
+        if (commentsUiState.value is CommentsUiState.Done) {
+            viewModelScope.launch {
+                if (_token.value != null && photoId != null && _commentToRemove.value != null) {
+                    commentsRepository.removeComment(token = _token.value!!, imageId = photoId,commentId = _commentToRemove.value!!)
+                    _commentToRemove.value = null
+                    _commentsUiState.update { (it as CommentsUiState.Done).copy(showDeleteDialog = false) }
+                    getComments()
+                } else {
+                    _commentsUiState.update { CommentsUiState.Error("Params error!") }
+                }
+            }
+        }
+    }
+
+    fun onRequestDenied() {
+        _commentToRemove.value = null
+        val state = commentsUiState.value
+        if (state is CommentsUiState.Done) {
+            _commentsUiState.update {
+                state.copy(showDeleteDialog = false)
+            }
+        }
     }
 }
