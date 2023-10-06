@@ -18,6 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.globa.balinasofttestapp.common.R
+import com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme
+import com.globa.balinasofttestapp.common.ui.theme.headerHeight
 
 @Composable
 fun MenuHeader(
@@ -26,9 +28,9 @@ fun MenuHeader(
 ) {
     Row(
         modifier = modifier
-            .height(com.globa.balinasofttestapp.common.ui.theme.headerHeight)
+            .height(headerHeight)
             .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.background),
+            .background(color = MaterialTheme.colorScheme.primary),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -38,7 +40,11 @@ fun MenuHeader(
                 .size(50.dp)
                 .padding(start = 10.dp)
         ) {
-            Icon(painter = painterResource(id = R.drawable.ic_menu) , contentDescription = "Menu")
+            Icon(
+                painter = painterResource(id = R.drawable.ic_menu),
+                contentDescription = "Menu",
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 }
@@ -47,7 +53,7 @@ fun MenuHeader(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun MenuHeaderPreview() {
-    com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme {
+    BalinaSoftTestAppTheme {
         MenuHeader {}
     }
 }
@@ -58,9 +64,9 @@ fun EmptyHeader(
 ) {
     Row(
         modifier = modifier
-            .height(com.globa.balinasofttestapp.common.ui.theme.headerHeight)
+            .height(headerHeight)
             .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.background),
+            .background(color = MaterialTheme.colorScheme.primary),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ){
@@ -72,7 +78,7 @@ fun EmptyHeader(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun EmptyHeaderPreview() {
-    com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme {
+    BalinaSoftTestAppTheme {
         EmptyHeader()
     }
 }
@@ -84,9 +90,9 @@ fun BackHeader(
 ) {
     Row(
         modifier = modifier
-            .height(com.globa.balinasofttestapp.common.ui.theme.headerHeight)
+            .height(headerHeight)
             .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.background),
+            .background(color = MaterialTheme.colorScheme.primary),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -96,7 +102,11 @@ fun BackHeader(
                 .size(50.dp)
                 .padding(start = 10.dp)
         ) {
-            Icon(painter = painterResource(id = R.drawable.ic_back) , contentDescription = "Menu")
+            Icon(
+                painter = painterResource(id = R.drawable.ic_back),
+                contentDescription = "Menu",
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 }
@@ -105,7 +115,7 @@ fun BackHeader(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun BackHeaderPreview() {
-    com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme {
+    BalinaSoftTestAppTheme {
         BackHeader {}
     }
 }
