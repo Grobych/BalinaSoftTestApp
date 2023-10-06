@@ -12,6 +12,7 @@ import com.globa.balinasofttestapp.network.api.ImagesNetworkApi
 import com.globa.balinasofttestapp.network.api.model.NetworkResponse
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
 class PhotosRemoteMediator(
@@ -89,6 +90,20 @@ class PhotosRemoteMediator(
             MediatorResult.Error(e)
         } catch (e: HttpException) {
             MediatorResult.Error(e)
+        }
+    }
+
+    override suspend fun initialize(): InitializeAction {
+        val remoteKey = database.withTransaction {
+            remoteKeyDao.getKeyByPhoto("discover_photo")
+        } ?: return InitializeAction.LAUNCH_INITIAL_REFRESH
+
+        val cacheTimeout = TimeUnit.HOURS.convert(1, TimeUnit.MILLISECONDS)
+
+        return if((System.currentTimeMillis() - remoteKey.lastUpdated) >= cacheTimeout) {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
         }
     }
 
