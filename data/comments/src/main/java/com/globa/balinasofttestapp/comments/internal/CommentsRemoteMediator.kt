@@ -1,4 +1,4 @@
-package com.globa.balinasofttestapp.photos.internal.photos
+package com.globa.balinasofttestapp.comments.internal
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -6,24 +6,25 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.globa.balinasofttesrapp.database.api.PhotosDatabase
-import com.globa.balinasofttesrapp.database.api.model.PhotoDBModel
-import com.globa.balinasofttesrapp.database.api.model.PhotosRemoteKey
-import com.globa.balinasofttestapp.network.api.ImagesNetworkApi
+import com.globa.balinasofttesrapp.database.api.model.CommentDBModel
+import com.globa.balinasofttesrapp.database.api.model.CommentsRemoteKey
+import com.globa.balinasofttestapp.network.api.CommentsNetworkApi
 import com.globa.balinasofttestapp.network.api.model.NetworkResponse
 import retrofit2.HttpException
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
-class PhotosRemoteMediator(
+class CommentsRemoteMediator(
     private val token: String,
+    private val imageId: Int,
     private val database: PhotosDatabase,
-    private val api: ImagesNetworkApi
-) : RemoteMediator<Int, PhotoDBModel>() {
-    private val photosDao = database.photosDao
-    private val remoteKeyDao = database.photosRemoteKeyDao
+    private val api: CommentsNetworkApi
+) : RemoteMediator<Int, CommentDBModel>() {
+    private val commentsDao = database.commentsDao
+    private val remoteKeyDao = database.commentsRemoteKeyDao
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, PhotoDBModel>
+        state: PagingState<Int, CommentDBModel>
     ): MediatorResult {
         return try {
             val page = when(loadType) {
@@ -35,7 +36,7 @@ class PhotosRemoteMediator(
                 }
                 LoadType.APPEND -> {
                     val remoteKey = database.withTransaction {
-                        remoteKeyDao.getKeyByPhoto("discover_photo")
+                        remoteKeyDao.getKeyByComment("discover_comment")
                     } ?: return MediatorResult.Success(true)
 
                     if(remoteKey.nextPage == null) {
@@ -45,18 +46,19 @@ class PhotosRemoteMediator(
                     remoteKey.nextPage
                 }
             }
-            println(page)
-            val response = api.getImages(
+            val response = api.getComments(
                 token = token,
+                id = imageId,
                 page = page?:0
             )
+            println(response.toString())
             when (response) {
                 is NetworkResponse.Error -> MediatorResult.Error(Throwable(response.message))
                 is NetworkResponse.Exception -> MediatorResult.Error(response.e)
                 is NetworkResponse.Success -> {
                     database.withTransaction {
                         if (loadType == LoadType.REFRESH) {
-                            photosDao.clearAll()
+                            commentsDao.clearAll()
                         }
                         val nextPage = if(response.data.body.isEmpty()) {
                             null
@@ -64,19 +66,18 @@ class PhotosRemoteMediator(
                             page?.plus(1)
                         }
                         remoteKeyDao.insertKey(
-                            PhotosRemoteKey(
-                                id = "discover_photo",
+                            CommentsRemoteKey(
+                                id = "discover_comment",
                                 nextPage = nextPage,
                                 lastUpdated = System.currentTimeMillis()
                             )
                         )
-                        photosDao.insertAll(response.data.body.map {
-                            PhotoDBModel(
+                        commentsDao.addComments(response.data.body.map {
+                            CommentDBModel(
                                 id = it.id,
+                                photoId = imageId,
                                 date = it.date,
-                                url = it.url,
-                                latitude = it.latitude,
-                                longitude = it.longitude
+                                text = it.text
                             )
                         })
                     }

@@ -93,7 +93,9 @@ fun PhotoDetailScreen(
         }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(it)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
         ) {
             when (val state = uiState.value) {
                 is PhotoDetailsUiState.Done -> DonePhotoDetailsScreen(photo = state.photo)
@@ -169,7 +171,7 @@ fun CommentsScreen(
                             .background(color = MaterialTheme.colorScheme.primaryContainer)
                             .combinedClickable(
                                 onClick = {},
-                                onLongClick = { onCommentLongClick(comment.id)}
+                                onLongClick = { onCommentLongClick(comment.id) }
                             )
                     ) {
                         Text(

@@ -39,6 +39,7 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     implementation(libs.retrofit)
+    implementation(libs.room)
 
     implementation(libs.paging.core)
 
