@@ -12,12 +12,14 @@ import com.globa.balinasofttestapp.comments.api.model.Comment
 import com.globa.balinasofttestapp.comments.api.model.Response
 import com.globa.balinasofttestapp.comments.api.model.UploadComment
 import com.globa.balinasofttestapp.network.api.CommentsNetworkApi
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+@ViewModelScoped
 internal class CommentsRepositoryImpl @Inject constructor(
     private val networkDataSource: CommentsNetworkDataSource,
     private val api: CommentsNetworkApi,

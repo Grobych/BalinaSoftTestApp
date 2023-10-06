@@ -15,21 +15,6 @@ internal class CommentsNetworkDataSource @Inject constructor(
     private val api: CommentsNetworkApi,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ) {
-    suspend fun getComments(token: String, imageId: Int, page: Int): Response<List<Comment>> =
-        withContext(coroutineDispatcher) {
-            when (val result = api.getComments(token = token, id = imageId, page = page)) {
-                is NetworkResponse.Success -> {
-                    Response.Success(result.data.body.map { it.asDomainModel() })
-                }
-                is NetworkResponse.Error -> {
-                    Response.Error(message = result.message)
-                }
-                is NetworkResponse.Exception -> {
-                    Response.Error(message = "Exception: ${result.e.message?: "Unknown error"}")
-                }
-            }
-        }
-
     suspend fun sendComment(token: String, imageId: Int, comment: UploadComment): Response<Comment> =
         withContext(coroutineDispatcher) {
             when (val result = api.postComment(token = token, id = imageId, comment = comment.asNetworkModel())) {
@@ -45,7 +30,7 @@ internal class CommentsNetworkDataSource @Inject constructor(
                 is NetworkResponse.Error -> Response.Error(result.message)
                 is NetworkResponse.Exception -> Response.Error(result.e.toString())
                 is NetworkResponse.Success -> {
-                    if (result.data.body == null) Response.Success(Comment(id = commentId, date = 0L, text = "")) //love this api {"status":200,"data":null}
+                    if (result.data.body == null) Response.Success(Comment(id = commentId, date = 0L, text = "")) //{"status":200,"data":null}
                     else Response.Success(result.data.body.asDomainModel())
                 }
             }
