@@ -1,11 +1,9 @@
 package com.globa.balinasofttestapp.camera
 
-import android.Manifest
-import android.content.pm.PackageManager
+import android.content.Context
 import android.graphics.Bitmap
 import android.location.Location
 import android.net.Uri
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -25,26 +23,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.globa.balinasofttestapp.common.ui.composable.BackHeader
 import com.globa.balinasofttestapp.common.ui.composable.LoadingAnimation
+import com.globa.balinasofttestapp.common.ui.composable.permissions.CameraPermission
 import com.globa.balinasofttestapp.common.ui.composable.permissions.LocationPermissions
+import com.globa.balinasofttestapp.common.util.DateFormatter
 import com.globa.balinasofttestapp.common.util.readUri
-import java.util.Objects
+import java.io.File
+import java.util.Date
 
 @Composable
 fun SendPhotoScreen(
     onBackButtonClick: () -> Unit
 ) {
     LocationPermissions {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            BackHeader(onBackButtonClick = onBackButtonClick)
-            SendPhotoScreenContent {
-                onBackButtonClick()
+        CameraPermission {
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                BackHeader(onBackButtonClick = onBackButtonClick)
+                SendPhotoScreenContent {
+                    onBackButtonClick()
+                }
             }
         }
     }
@@ -93,33 +95,17 @@ fun TakingPhoto(
     val context = LocalContext.current
     val file = context.createImageFile()
     val uri = FileProvider.getUriForFile(
-        Objects.requireNonNull(context),
+        context,
         "com.globa.balinasofttestapp.provider", file
     )
 
     val cameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
             onPhotoCaptured(uri)
-            Toast.makeText(context, uri.toString(), Toast.LENGTH_LONG).show()
         }
 
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) {
-        if (it) cameraLauncher.launch(uri)
-    }
-
-    val permissionCheckResult =
-        ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-        SideEffect {
-            cameraLauncher.launch(uri)
-        }
-    } else {
-        // Request a permission
-        SideEffect {
-            permissionLauncher.launch(Manifest.permission.CAMERA)
-        }
+    SideEffect {
+        cameraLauncher.launch(uri)
     }
 }
 
@@ -198,7 +184,7 @@ fun ReadyToSendScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(bitmap = bitmap.asImageBitmap(), contentDescription = "Photo to upload")
-        Text(text = location.toString())
+        Text(text = "Lat: ${location.latitude}; Lng: ${location.longitude}")
         Button(
             modifier = Modifier.padding(top = 50.dp),
             onClick = { onSendButtonClick() }
@@ -206,4 +192,14 @@ fun ReadyToSendScreen(
             Text(text = "Send")
         }
     }
+}
+
+fun Context.createImageFile(): File {
+    val timeStamp = DateFormatter.getExtendDate(Date().time)
+    val imageFileName = "JPEG_" + timeStamp + "_"
+    return File.createTempFile(
+        imageFileName,
+        ".jpg",
+        externalCacheDir
+    )
 }

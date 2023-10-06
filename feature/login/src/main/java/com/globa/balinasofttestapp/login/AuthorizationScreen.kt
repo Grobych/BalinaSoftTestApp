@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +50,8 @@ fun AuthorizationScreen(
     val onSecondPasswordChanged = fun(password: String) {viewModel.secondPasswordChanged(password)}
     val onSignInButtonClicked = fun () {viewModel.signInClicked()}
     val onSignUpButtonClicked = fun () {viewModel.signUpClicked()}
+
+
 
     Scaffold(
         topBar = {
@@ -271,18 +274,18 @@ fun AuthorizationError(
     }
 }
 
-//@Preview
-//@Preview(uiMode = UI_MODE_NIGHT_YES)
-//@Composable
-//fun AuthorizationErrorPreview() {
-//    MaterialTheme {
-//        Surface(
-//            modifier = Modifier.size(360.dp,480.dp)
-//        ) {
-//            AuthorizationError(message = "Test message.") {}
-//        }
-//    }
-//}
+@Preview
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun AuthorizationErrorPreview() {
+    MaterialTheme {
+        Surface(
+            modifier = Modifier.size(360.dp,480.dp)
+        ) {
+            AuthorizationError(message = "Test message.") {}
+        }
+    }
+}
 
 @Composable
 fun SendingAnimation(
@@ -291,40 +294,18 @@ fun SendingAnimation(
     //TODO:add animation
 }
 
-//@Preview
-//@Preview(uiMode = UI_MODE_NIGHT_YES)
-//@Composable
-//fun SendingAnimationPreview() {
-//    MaterialTheme {
-//        Surface(
-//            modifier = Modifier.size(360.dp,480.dp)
-//        ) {
-//            SendingAnimation()
-//        }
-//    }
-//}
-//
-//@Preview
-//@Preview(uiMode = UI_MODE_NIGHT_YES)
-//@Composable
-//fun AuthorizationScreenPreview() {
-//    class FakeRepo(): LoginRepository {
-//        override fun getLoginStatus(): StateFlow<LoginStatus> = MutableStateFlow(LoginStatus.NotAuthorised).asStateFlow()
-//
-//        override suspend fun signUp(login: String, password: String) {}
-//
-//        override suspend fun signIn(login: String, password: String) {}
-//    }
-//    val repository = FakeRepo()
-//    val viewModel = AuthorizationViewModel(repository)
-//    MaterialTheme {
-//        Surface {
-//            AuthorizationScreen(
-//                viewModel = viewModel
-//            )
-//        }
-//    }
-//}
+@Preview
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun SendingAnimationPreview() {
+    MaterialTheme {
+        Surface(
+            modifier = Modifier.size(360.dp,480.dp)
+        ) {
+            SendingAnimation()
+        }
+    }
+}
 
 @Preview
 @Preview(uiMode = UI_MODE_NIGHT_YES)
