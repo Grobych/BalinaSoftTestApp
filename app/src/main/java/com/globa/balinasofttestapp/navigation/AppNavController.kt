@@ -15,7 +15,7 @@ fun AppNavController(
 ) {
     val navController = rememberNavController()
     val userName = viewModel.userName.collectAsState(initial = "")
-    
+
     val navigateToMain: () -> Unit = {
         navController.navigate(AppRoutes.Main.name)
     }
