@@ -7,10 +7,12 @@ import com.globa.balinasofttestapp.common.di.IoDispatcher
 import com.globa.balinasofttestapp.network.api.CommentsNetworkApi
 import com.globa.balinasofttestapp.network.api.model.CommentPost
 import com.globa.balinasofttestapp.network.api.model.NetworkResponse
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@ViewModelScoped
 internal class CommentsNetworkDataSource @Inject constructor(
     private val api: CommentsNetworkApi,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher

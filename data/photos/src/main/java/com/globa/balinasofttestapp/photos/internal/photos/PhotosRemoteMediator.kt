@@ -21,6 +21,7 @@ class PhotosRemoteMediator(
 ) : RemoteMediator<Int, PhotoDBModel>() {
     private val photosDao = database.photosDao
     private val remoteKeyDao = database.photosRemoteKeyDao
+    private val remoteKeyLine = "discover_photo"
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, PhotoDBModel>
@@ -35,7 +36,7 @@ class PhotosRemoteMediator(
                 }
                 LoadType.APPEND -> {
                     val remoteKey = database.withTransaction {
-                        remoteKeyDao.getKeyByPhoto("discover_photo")
+                        remoteKeyDao.getKeyByPhoto(remoteKeyLine)
                     } ?: return MediatorResult.Success(true)
 
                     if(remoteKey.nextPage == null) {
@@ -45,7 +46,6 @@ class PhotosRemoteMediator(
                     remoteKey.nextPage
                 }
             }
-            println(page)
             val response = api.getImages(
                 token = token,
                 page = page?:0
@@ -65,9 +65,8 @@ class PhotosRemoteMediator(
                         }
                         remoteKeyDao.insertKey(
                             PhotosRemoteKey(
-                                id = "discover_photo",
-                                nextPage = nextPage,
-                                lastUpdated = System.currentTimeMillis()
+                                id = remoteKeyLine,
+                                nextPage = nextPage
                             )
                         )
                         photosDao.insertAll(response.data.body.map {

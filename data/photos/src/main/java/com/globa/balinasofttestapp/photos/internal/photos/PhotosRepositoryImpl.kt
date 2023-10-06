@@ -12,14 +12,14 @@ import com.globa.balinasofttestapp.photos.api.PhotosRepository
 import com.globa.balinasofttestapp.photos.api.model.PhotoDetails
 import com.globa.balinasofttestapp.photos.api.model.Response
 import com.globa.balinasofttestapp.photos.api.model.UploadPhoto
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@ActivityRetainedScoped
 internal class PhotosRepositoryImpl @Inject constructor(
     private val photosNetworkDataSource: PhotosNetworkDataSource,
     private val photosLocalDataSource: PhotosLocalDataSource,

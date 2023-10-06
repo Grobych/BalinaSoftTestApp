@@ -4,11 +4,13 @@ import com.globa.balinasofttesrapp.database.api.PhotosDatabase
 import com.globa.balinasofttesrapp.database.api.model.PhotoLocationDBModel
 import com.globa.balinasofttestapp.common.di.IoDispatcher
 import com.globa.balinasofttestapp.photos.api.model.PhotoLocation
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@ViewModelScoped
 internal class PhotoLocationsLocalDataSource @Inject constructor(
     private val database: PhotosDatabase,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher

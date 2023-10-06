@@ -28,5 +28,4 @@ data class PhotosRemoteKey(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id") val id: String,
     @ColumnInfo(name = "next_page") val nextPage: Int?,
-    @ColumnInfo(name = "last_updated") val lastUpdated: Long
 )
