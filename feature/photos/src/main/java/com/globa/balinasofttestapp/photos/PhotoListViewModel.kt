@@ -34,7 +34,7 @@ class PhotoListViewModel @Inject constructor(
         refresh()
     }
 
-    fun getToken() {
+    private fun getToken() {
         viewModelScope.launch {
             loginRepository.getLoginStatus()
                 .collect { authData ->

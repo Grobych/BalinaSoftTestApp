@@ -66,7 +66,7 @@ class PhotoDetailsViewModel @Inject constructor(
                 if (token != null && photoId != null){
                     _commentsUiState.value = CommentsUiState.Done(
                         commentsRepository.getComments(token = token, imageId = photoId)
-                    ) //TODO: rewrite
+                    )
                 }
             }
         }
@@ -106,8 +106,7 @@ class PhotoDetailsViewModel @Inject constructor(
     }
 
     fun onCommentTextFieldChange(text: String) {
-//        if (commentsUiState.value is CommentsUiState.Done)
-            _commentTextFieldState.value = text
+        _commentTextFieldState.value = text
     }
 
     fun requestToRemoveComment(id: Int) {

@@ -31,6 +31,20 @@ class SendPhotoViewModel @Inject constructor(
 
     private val _imageToSend = MutableStateFlow<UploadPhoto?>(null)
     private val _token = MutableStateFlow<String?>(null)
+
+    init {
+        viewModelScope.launch {
+            loginRepository.getLoginStatus()
+                .onEach { authData ->
+                    println(authData)
+                    if (authData is AuthData.Success) {
+                        _token.value = authData.token
+                    }
+                }
+                .collect()
+        }
+    }
+
     fun onPhotoCaptured(byteArray: ByteArray) {
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
@@ -74,19 +88,6 @@ class SendPhotoViewModel @Inject constructor(
                     }
                 }
             }
-        }
-    }
-
-    init {
-        viewModelScope.launch {
-            loginRepository.getLoginStatus()
-                .onEach { authData ->
-                    println(authData)
-                    if (authData is AuthData.Success) {
-                            _token.value = authData.token
-                        }
-                    }
-                .collect()
         }
     }
 }
