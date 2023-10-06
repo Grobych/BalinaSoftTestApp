@@ -22,6 +22,7 @@ class CommentsRemoteMediator(
 ) : RemoteMediator<Int, CommentDBModel>() {
     private val commentsDao = database.commentsDao
     private val remoteKeyDao = database.commentsRemoteKeyDao
+    private val remoteKeyLine = "discover_comment"
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, CommentDBModel>
@@ -36,22 +37,20 @@ class CommentsRemoteMediator(
                 }
                 LoadType.APPEND -> {
                     val remoteKey = database.withTransaction {
-                        remoteKeyDao.getKeyByComment("discover_comment")
+                        remoteKeyDao.getKeyByComment(remoteKeyLine)
                     } ?: return MediatorResult.Success(true)
 
                     if(remoteKey.nextPage == null) {
                         return MediatorResult.Success(true)
                     }
-
                     remoteKey.nextPage
                 }
             }
             val response = api.getComments(
                 token = token,
                 id = imageId,
-                page = page?:0
+                page = page!!
             )
-            println(response.toString())
             when (response) {
                 is NetworkResponse.Error -> MediatorResult.Error(Throwable(response.message))
                 is NetworkResponse.Exception -> MediatorResult.Error(response.e)
@@ -63,13 +62,12 @@ class CommentsRemoteMediator(
                         val nextPage = if(response.data.body.isEmpty()) {
                             null
                         } else {
-                            page?.plus(1)
+                            page.plus(1)
                         }
                         remoteKeyDao.insertKey(
                             CommentsRemoteKey(
-                                id = "discover_comment",
-                                nextPage = nextPage,
-                                lastUpdated = System.currentTimeMillis()
+                                id = remoteKeyLine,
+                                nextPage = nextPage
                             )
                         )
                         commentsDao.addComments(response.data.body.map {

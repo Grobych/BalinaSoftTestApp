@@ -19,6 +19,5 @@ data class CommentDBModel(
 data class CommentsRemoteKey(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id") val id: String,
-    @ColumnInfo(name = "next_page") val nextPage: Int?,
-    @ColumnInfo(name = "last_updated") val lastUpdated: Long
+    @ColumnInfo(name = "next_page") val nextPage: Int?
 )
