@@ -16,7 +16,7 @@ import com.globa.balinasofttestappphotodetails.PhotoDetailScreen
 
 @Composable
 fun DrawerNavController(
-    navigateToLogin: () -> Unit
+    userName: String
 ) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -43,7 +43,7 @@ fun DrawerNavController(
         drawerContent = {
             AppDrawerContent(
                 drawerState = drawerState,
-                userName = "Tempo Name",
+                userName = userName,
                 defaultPick = NavItem.PhotoListScreen
             ) { onUserPickedOption ->
                 when (onUserPickedOption) {

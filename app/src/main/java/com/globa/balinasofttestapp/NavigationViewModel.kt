@@ -12,6 +12,13 @@ import javax.inject.Inject
 class NavigationViewModel @Inject constructor(
     loginRepository: LoginRepository
 ): ViewModel() {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val userName = loginRepository.getLoginStatus().mapLatest {
+        if (it is AuthData.Success) {
+            it.userName
+        } else ""
+    }
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val isAuthorized = loginRepository.getLoginStatus().mapLatest {

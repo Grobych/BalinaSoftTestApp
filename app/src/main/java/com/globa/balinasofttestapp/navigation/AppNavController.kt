@@ -14,10 +14,8 @@ fun AppNavController(
     viewModel: NavigationViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
-
-    val navigateToLogin: () -> Unit = {
-        navController.navigate(AppRoutes.Login.name)
-    }
+    val userName = viewModel.userName.collectAsState(initial = "")
+    
     val navigateToMain: () -> Unit = {
         navController.navigate(AppRoutes.Main.name)
     }
@@ -34,7 +32,7 @@ fun AppNavController(
             route = AppRoutes.Main.name
         ) {
             DrawerNavController(
-                navigateToLogin = navigateToLogin
+                userName = userName.value
             )
         }
     }
