@@ -15,7 +15,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocationDataSource @Inject constructor(
+internal class LocationDataSource @Inject constructor(
     private val fusedLocationProviderClient: FusedLocationProviderClient,
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher
 ) {

@@ -5,7 +5,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocationRepositoryImpl @Inject constructor(
+internal class LocationRepositoryImpl @Inject constructor(
     private val locationDataSource: LocationDataSource
 ): LocationRepository {
     override suspend fun getLocation() = locationDataSource.getCurrentLocation()
