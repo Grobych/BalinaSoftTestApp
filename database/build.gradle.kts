@@ -41,9 +41,10 @@ dependencies {
     implementation(libs.gson)
 
     implementation(libs.paging.core)
+    implementation(libs.paging.room)
 
     implementation(libs.room)
-    api(libs.room.runtime)
+//    api(libs.room.runtime)
     //noinspection KaptUsageInsteadOfKsp
     kapt(libs.room.compiler)
 }

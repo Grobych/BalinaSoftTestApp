@@ -4,9 +4,10 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.globa.balinasofttesrapp.database.api.model.CommentDBModel
 import com.globa.balinasofttesrapp.database.api.model.PhotoDBModel
+import com.globa.balinasofttesrapp.database.api.model.PhotosRemoteKey
 
 @Database(
-    entities = [PhotoDBModel::class, CommentDBModel::class],
+    entities = [PhotoDBModel::class, CommentDBModel::class, PhotosRemoteKey::class],
     version = 1,
     exportSchema = false
 )
@@ -14,4 +15,5 @@ import com.globa.balinasofttesrapp.database.api.model.PhotoDBModel
 abstract class PhotosDatabase : RoomDatabase() {
     abstract val photosDao: PhotosDao
     abstract val commentsDao: CommentsDao
+    abstract val photosRemoteKeyDao: PhotosRemoteKeyDao
 }

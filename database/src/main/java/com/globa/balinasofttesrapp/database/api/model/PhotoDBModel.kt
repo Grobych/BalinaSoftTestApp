@@ -20,3 +20,13 @@ data class PhotoLocationDBModel(
     @ColumnInfo(name = "latitude") val latitude: Double = 0.0,
     @ColumnInfo(name = "longitude") val longitude: Double = 0.0
 )
+
+@Entity(
+    tableName = "photos_remote_keys"
+)
+data class PhotosRemoteKey(
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "id") val id: String,
+    @ColumnInfo(name = "next_page") val nextPage: Int?,
+    @ColumnInfo(name = "last_updated") val lastUpdated: Long
+)

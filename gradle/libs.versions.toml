@@ -23,6 +23,7 @@ navigation = "2.7.3"
 navigation-hilt = "1.0.0"
 paging = "3.2.1"
 paging-compose = "3.3.0-alpha02"
+paging-room = "2.5.2"
 retrofit = "2.9.0"
 room = "2.5.2"
 splashscreen = "1.0.1"
@@ -82,6 +83,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 # Paging
 paging-core = { module = "androidx.paging:paging-runtime", version.ref = "paging"}
 paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging-compose"}
+paging-room = { module = "androidx.room:room-paging", version.ref = "paging-room"}
 paging-test = { module = "androidx.paging:paging-common", version.ref = "paging"}
 
 # Room

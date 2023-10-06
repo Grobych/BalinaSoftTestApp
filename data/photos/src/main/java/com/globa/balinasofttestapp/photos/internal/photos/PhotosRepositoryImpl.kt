@@ -1,14 +1,20 @@
 package com.globa.balinasofttestapp.photos.internal.photos
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
+import com.globa.balinasofttesrapp.database.api.PhotosDatabase
+import com.globa.balinasofttestapp.network.api.ImagesNetworkApi
 import com.globa.balinasofttestapp.network.api.model.NetworkResponse
 import com.globa.balinasofttestapp.photos.api.PhotosRepository
 import com.globa.balinasofttestapp.photos.api.model.PhotoDetails
 import com.globa.balinasofttestapp.photos.api.model.Response
 import com.globa.balinasofttestapp.photos.api.model.UploadPhoto
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,18 +22,22 @@ import javax.inject.Singleton
 @Singleton
 internal class PhotosRepositoryImpl @Inject constructor(
     private val photosNetworkDataSource: PhotosNetworkDataSource,
-    private val photosLocalDataSource: PhotosLocalDataSource
+    private val photosLocalDataSource: PhotosLocalDataSource,
+    private val api: ImagesNetworkApi,
+    private val database: PhotosDatabase
 ): PhotosRepository {
+    @OptIn(ExperimentalPagingApi::class)
     override suspend fun getPhotos(token: String): Flow<PagingData<PhotoDetails>> = Pager(
         config = PagingConfig(pageSize = 20),
+        remoteMediator = PhotosRemoteMediator(
+            token = token,
+            api = api,
+            database = database
+        ),
         pagingSourceFactory = {
-            PhotosPagingSource(
-                networkDataSource = photosNetworkDataSource,
-                localDataSource = photosLocalDataSource,
-                token = token
-            )
+            database.photosDao.getPhotos()
         }
-    ).flow
+    ).flow.map { pagingData -> pagingData.map { it.asDomainModel() } }.flowOn(Dispatchers.IO)
 
     override suspend fun getPhoto(id: Int): Flow<Response<PhotoDetails>> {
         return photosLocalDataSource
