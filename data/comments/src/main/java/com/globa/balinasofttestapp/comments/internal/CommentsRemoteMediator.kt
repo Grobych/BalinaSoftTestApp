@@ -14,7 +14,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
-class CommentsRemoteMediator(
+internal class CommentsRemoteMediator(
     private val token: String,
     private val imageId: Int,
     private val database: PhotosDatabase,
