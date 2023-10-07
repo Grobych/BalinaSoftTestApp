@@ -43,6 +43,7 @@ import com.globa.balinasofttestapp.comments.api.model.Comment
 import com.globa.balinasofttestapp.common.ui.composable.BackHeader
 import com.globa.balinasofttestapp.common.ui.composable.LoadingAnimation
 import com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme
+import com.globa.balinasofttestapp.common.ui.theme.Paddings
 import com.globa.balinasofttestapp.common.util.DateFormatter
 import com.globa.balinasofttestapp.photos.api.model.PhotoDetails
 
@@ -172,6 +173,8 @@ fun CommentsScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(Paddings.small)
+                            .clip(MaterialTheme.shapes.medium)
                             .height(60.dp)
                             .background(color = MaterialTheme.colorScheme.primaryContainer)
                             .combinedClickable(
@@ -180,12 +183,21 @@ fun CommentsScreen(
                             )
                     ) {
                         Text(
-                            modifier = Modifier.align(Alignment.CenterStart),
-                            text = it.text
+                            modifier = Modifier
+                                .align(Alignment.CenterStart)
+                                .padding(start = Paddings.small)
+                            ,
+                            text = it.text,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Text(
-                            modifier = Modifier.align(Alignment.BottomEnd),
-                            text = DateFormatter.getExtendDate(it.date)
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(end = Paddings.small)
+                            ,
+                            text = DateFormatter.getExtendDate(it.date),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.labelMedium
                         )
                     }
                 }
