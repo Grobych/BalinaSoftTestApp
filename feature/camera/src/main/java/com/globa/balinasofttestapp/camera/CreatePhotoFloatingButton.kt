@@ -20,8 +20,8 @@ fun CreatePhotoFloatingButton(
 ) {
 
     FloatingActionButton(
-        modifier = modifier.size(50.dp),
-        shape = RoundedCornerShape(50.dp),
+        modifier = modifier.size(60.dp),
+        shape = RoundedCornerShape(60.dp),
         onClick = {
             navigateToCameraScreen()
         }

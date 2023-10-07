@@ -10,6 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -20,6 +21,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -29,6 +31,7 @@ import com.globa.balinasofttestapp.common.ui.composable.BackHeader
 import com.globa.balinasofttestapp.common.ui.composable.LoadingAnimation
 import com.globa.balinasofttestapp.common.ui.composable.permissions.CameraPermission
 import com.globa.balinasofttestapp.common.ui.composable.permissions.LocationPermissions
+import com.globa.balinasofttestapp.common.ui.theme.Paddings
 import com.globa.balinasofttestapp.common.util.DateFormatter
 import com.globa.balinasofttestapp.common.util.readUri
 import java.io.File
@@ -183,10 +186,21 @@ fun ReadyToSendScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(bitmap = bitmap.asImageBitmap(), contentDescription = "Photo to upload")
-        Text(text = "Lat: ${location.latitude}; Lng: ${location.longitude}")
+        Image(
+            bitmap = bitmap.asImageBitmap(),
+            contentDescription = "Photo to upload",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Paddings.medium)
+                .clip(MaterialTheme.shapes.medium)
+            ,
+        )
+        Text(
+            modifier = Modifier.padding(Paddings.medium),
+            text = "Lat: ${location.latitude}; Lng: ${location.longitude}"
+        )
         Button(
-            modifier = Modifier.padding(top = 50.dp),
+            modifier = Modifier.padding(top = Paddings.extraLarge),
             onClick = { onSendButtonClick() }
         ) {
             Text(text = "Send")
