@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation(project(path = ":data:login"))
+    implementation(project(path = ":common"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.lifecycle.viewmodel)

@@ -1,11 +1,13 @@
 package com.globa.balinasofttestapp.login
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,6 +18,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -28,6 +32,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.globa.balinasofttestapp.common.ui.composable.EmptyHeader
+import com.globa.balinasofttestapp.common.ui.composable.LoadingAnimation
+import com.globa.balinasofttestapp.common.ui.theme.headerHeight
 
 @Composable
 fun AuthorizationScreen(
@@ -55,10 +62,15 @@ fun AuthorizationScreen(
 
     Scaffold(
         topBar = {
-            AuthorizationScreenHeader(
-                selectedTab = selectedTab.value,
-                onTabClicked = tabClicked
-            )
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                EmptyHeader()
+                AuthorizationScreenHeader(
+                    selectedTab = selectedTab.value,
+                    onTabClicked = tabClicked
+                )
+            }
         }
     ) { paddingValues ->
         Column(
@@ -103,7 +115,9 @@ fun AuthorizationScreen(
                     )
                 }
                 is AuthorizationUiState.Sending -> {
-                    SendingAnimation()
+                    LoadingAnimation(
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
             }
         }
@@ -232,23 +246,56 @@ fun AuthorizationScreenHeader(
     selectedTab: AuthorizationScreenTab,
     onTabClicked: (AuthorizationScreenTab) -> Unit
 ) {
+    val tabPosition = if (selectedTab == AuthorizationScreenTab.SignIn) 0 else 1
     TabRow(
         selectedTabIndex = selectedTab.ordinal,
-        modifier = Modifier.height(120.dp) //TODO: use constants
+        modifier = Modifier.height(headerHeight),
+        indicator = {
+            TabRowDefaults.Indicator(
+                modifier = Modifier.tabIndicatorOffset(
+                    currentTabPosition = it[tabPosition]
+                ),
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
     ) {
+
         Tab(
             selected = selectedTab == AuthorizationScreenTab.SignIn,
             onClick = { onTabClicked(AuthorizationScreenTab.SignIn) },
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier
+                .height(headerHeight)
+                .background(color = MaterialTheme.colorScheme.primary)
+
         ) {
-            Text(text = "Sing In")
+            Column(
+                modifier = Modifier.fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Sing In",
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
         Tab(
             selected = selectedTab == AuthorizationScreenTab.SignUp,
             onClick = { onTabClicked(AuthorizationScreenTab.SignUp) },
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier
+                .height(headerHeight)
+                .background(color = MaterialTheme.colorScheme.primary)
         ) {
-            Text(text = "Sing Up")
+            Column(
+                modifier = Modifier.fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Sing Up",
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
     }
 }
@@ -283,26 +330,6 @@ fun AuthorizationErrorPreview() {
             modifier = Modifier.size(360.dp,480.dp)
         ) {
             AuthorizationError(message = "Test message.") {}
-        }
-    }
-}
-
-@Composable
-fun SendingAnimation(
-    modifier: Modifier = Modifier
-) {
-    //TODO:add animation
-}
-
-@Preview
-@Preview(uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun SendingAnimationPreview() {
-    MaterialTheme {
-        Surface(
-            modifier = Modifier.size(360.dp,480.dp)
-        ) {
-            SendingAnimation()
         }
     }
 }

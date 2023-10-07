@@ -121,7 +121,9 @@ class AuthorizationViewModel @Inject constructor(
                     when(val response = repository.signIn(state.login,state.password)) {
                         is AuthData.Error -> {
                             _uiState.update {
-                                AuthorizationUiState.Error(response.message)
+                                if (response.message == "security.signin.incorrect")
+                                    AuthorizationUiState.Error("Wrong login or password!")
+                                 else AuthorizationUiState.Error(response.message)
                             }
                         }
                         is AuthData.Success -> {
@@ -148,7 +150,9 @@ class AuthorizationViewModel @Inject constructor(
                     when(val response = repository.signUp(state.login,state.password)) {
                         is AuthData.Error -> {
                             _uiState.update {
-                                AuthorizationUiState.Error(response.message)
+                                if (response.message == "security.signup.login-already-use")
+                                    AuthorizationUiState.Error("This login already used!")
+                                else AuthorizationUiState.Error(response.message)
                             }
                         }
                         is AuthData.Success -> {
