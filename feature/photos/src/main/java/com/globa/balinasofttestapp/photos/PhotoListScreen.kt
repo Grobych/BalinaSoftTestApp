@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,8 +21,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -33,6 +33,8 @@ import com.globa.balinasofttestapp.camera.CreatePhotoFloatingButton
 import com.globa.balinasofttestapp.common.ui.composable.LoadingAnimation
 import com.globa.balinasofttestapp.common.ui.composable.MenuHeader
 import com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme
+import com.globa.balinasofttestapp.common.ui.theme.Paddings
+import com.globa.balinasofttestapp.common.ui.theme.imageListSize
 import com.globa.balinasofttestapp.common.util.DateFormatter
 import com.globa.balinasofttestapp.photos.api.model.Photo
 import kotlinx.coroutines.flow.flowOf
@@ -114,7 +116,6 @@ private fun ErrorPhotoListScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            modifier = Modifier.padding(bottom = 10.dp),
             text = errorMessage
         )
     }
@@ -130,7 +131,7 @@ private fun DonePhotoListScreen(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
-        modifier = modifier
+        modifier = modifier.padding(Paddings.medium)
     ) {
         items(photos.itemCount) { index ->
             val photo = photos[index]
@@ -141,11 +142,14 @@ private fun DonePhotoListScreen(
                 ){
                     AsyncImage(
                         modifier = Modifier
-                            .size(100.dp)
+                            .fillMaxWidth()
+                            .padding(start = Paddings.medium, end = Paddings.medium)
                             .combinedClickable(
                                 onClick = { onPhotoClick(it.id) },
                                 onLongClick = { onPhotoLongClick(it.id) }
-                            ),
+                            )
+                            .clip(MaterialTheme.shapes.medium)
+                        ,
                         model = it.url,
                         contentDescription = "Photo ${it.id}"
                     )
@@ -158,7 +162,7 @@ private fun DonePhotoListScreen(
                 LoadingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(100.dp))
+                        .height(imageListSize))
             }
             is LoadState.Error -> item {
                 ErrorPhotoListScreen(
@@ -175,7 +179,7 @@ private fun DonePhotoListScreen(
                 LoadingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(100.dp))
+                        .height(imageListSize))
             }
             is LoadState.Error -> item {
                 ErrorPhotoListScreen(
