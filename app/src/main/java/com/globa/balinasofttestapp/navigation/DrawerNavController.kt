@@ -4,6 +4,8 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,9 +39,13 @@ fun DrawerNavController(
         navController.popBackStack()
     }
 
+    val gesturesEnabled = remember {
+        mutableStateOf(true)
+    }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
-        gesturesEnabled = false,
+        gesturesEnabled = gesturesEnabled.value,
         drawerContent = {
             AppDrawerContent(
                 drawerState = drawerState,
@@ -48,9 +54,11 @@ fun DrawerNavController(
             ) { onUserPickedOption ->
                 when (onUserPickedOption) {
                     NavItem.PhotoListScreen -> {
+                        gesturesEnabled.value = true
                         navigateToPhotoList()
                     }
                     NavItem.MapScreen -> {
+                        gesturesEnabled.value = false
                         navigateToMap()
                     }
                 }
@@ -87,7 +95,8 @@ fun DrawerNavController(
             ) {
                 MapScreen(
                     drawerState = drawerState,
-                    onMarkerCLick = navigateToPhotoDetails
+                    onMarkerCLick = navigateToPhotoDetails,
+                    navigateToCamera = navigateToCamera
                 )
             }
         }

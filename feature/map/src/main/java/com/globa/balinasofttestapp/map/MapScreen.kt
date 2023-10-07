@@ -10,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.globa.balinasofttestapp.camera.CreatePhotoFloatingButton
 import com.globa.balinasofttestapp.common.ui.composable.MenuHeader
 import com.globa.balinasofttestapp.common.ui.composable.permissions.LocationPermissions
 import com.globa.balinasofttestapp.photos.api.model.PhotoLocation
@@ -24,7 +25,8 @@ import kotlinx.coroutines.launch
 fun MapScreen(
     drawerState: DrawerState,
     viewModel: MapViewModel = hiltViewModel(),
-    onMarkerCLick: (Int) -> Unit
+    onMarkerCLick: (Int) -> Unit,
+    navigateToCamera: () -> Unit
 ) {
 
     val coroutineScope = rememberCoroutineScope()
@@ -35,6 +37,9 @@ fun MapScreen(
                     drawerState.open()
                 }
             }
+        },
+        floatingActionButton = {
+            CreatePhotoFloatingButton(navigateToCameraScreen = navigateToCamera)
         }
     ) {
         LocationPermissions {

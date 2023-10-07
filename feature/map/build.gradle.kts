@@ -45,6 +45,7 @@ dependencies {
     implementation(project(path = ":data:photos"))
     implementation(project(path = ":data:location"))
     implementation(project(path = ":common"))
+    implementation(project(path = ":feature:camera"))
 
     implementation(libs.bundles.maps)
 

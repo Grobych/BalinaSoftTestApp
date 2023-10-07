@@ -3,6 +3,7 @@ package com.globa.balinasofttestapp.navigation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.globa.balinasofttestapp.R
 import com.globa.balinasofttestapp.common.ui.theme.BalinaSoftTestAppTheme
+import com.globa.balinasofttestapp.common.ui.theme.Paddings
 import kotlinx.coroutines.launch
 
 @Composable
@@ -54,7 +56,10 @@ fun AppDrawerContent(
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = userName)
+                Text(
+                    text = userName,
+                    modifier = Modifier.padding(Paddings.small)
+                )
                 Divider()
                 AppDrawerItem(
                     navItem = NavItem.PhotoListScreen,
