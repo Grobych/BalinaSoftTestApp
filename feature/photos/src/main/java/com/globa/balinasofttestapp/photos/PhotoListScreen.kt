@@ -28,7 +28,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.globa.balinasofttestapp.camera.CreatePhotoFloatingButton
 import com.globa.balinasofttestapp.common.ui.composable.LoadingAnimation
 import com.globa.balinasofttestapp.common.ui.composable.MenuHeader
@@ -140,9 +140,9 @@ private fun DonePhotoListScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    AsyncImage(
+                    SubcomposeAsyncImage(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxSize()
                             .padding(start = Paddings.medium, end = Paddings.medium)
                             .combinedClickable(
                                 onClick = { onPhotoClick(it.id) },
@@ -151,6 +151,7 @@ private fun DonePhotoListScreen(
                             .clip(MaterialTheme.shapes.medium)
                         ,
                         model = it.url,
+                        loading = { LoadingAnimation(modifier = Modifier.fillMaxSize()) },
                         contentDescription = "Photo ${it.id}"
                     )
                     Text(text = DateFormatter.getSimpleDate(it.date))
