@@ -58,7 +58,7 @@ class PhotoListViewModel @Inject constructor(
         }
     }
 
-    private fun refresh() {
+    fun refresh() {
         viewModelScope.launch {
             _token.collect { token ->
                 if (token != null){

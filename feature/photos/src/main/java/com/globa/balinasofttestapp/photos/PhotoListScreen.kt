@@ -91,7 +91,8 @@ fun PhotoListScreen(
             is PhotosUiState.Error -> {
                 ErrorPhotoListScreen(
                     modifier = Modifier.padding(it),
-                    errorMessage = state.message
+                    errorMessage = state.message,
+                    onReturnButtonClick = { viewModel.refresh() }
                 )
             }
             is PhotosUiState.Done -> {
@@ -112,7 +113,8 @@ fun PhotoListScreen(
 @Composable
 private fun ErrorPhotoListScreen(
     modifier: Modifier = Modifier,
-    errorMessage: String
+    errorMessage: String,
+    onReturnButtonClick: () -> Unit,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -122,6 +124,9 @@ private fun ErrorPhotoListScreen(
         Text(
             text = errorMessage
         )
+        Button(onClick = { onReturnButtonClick() }) {
+            Text(text = "Return")
+        }
     }
 }
 
@@ -147,7 +152,11 @@ private fun DonePhotoListScreen(
                     SubcomposeAsyncImage(
                         modifier = Modifier
                             .size(100.dp)
-                            .padding(start = Paddings.medium, end = Paddings.medium, top = Paddings.medium)
+                            .padding(
+                                start = Paddings.medium,
+                                end = Paddings.medium,
+                                top = Paddings.medium
+                            )
                             .combinedClickable(
                                 onClick = { onPhotoClick(it.id) },
                                 onLongClick = { onPhotoLongClick(it.id) }
@@ -175,9 +184,9 @@ private fun DonePhotoListScreen(
                         .height(imageListSize))
             }
             is LoadState.Error -> item {
-                ErrorPhotoListScreen(
+                ErrorListItem(
                     modifier = Modifier.fillMaxSize(),
-                    errorMessage = state.error.localizedMessage!!
+                    message = state.error.localizedMessage!!
                 )
             }
             is LoadState.NotLoading -> item {
@@ -192,9 +201,9 @@ private fun DonePhotoListScreen(
                         .height(imageListSize))
             }
             is LoadState.Error -> item {
-                ErrorPhotoListScreen(
+                ErrorListItem(
                     modifier = Modifier.fillMaxSize(),
-                    errorMessage = state.error.localizedMessage!!
+                    message = state.error.localizedMessage!!
                 )
             }
             is LoadState.NotLoading -> item {
@@ -202,7 +211,22 @@ private fun DonePhotoListScreen(
             }
         }
     }
+}
 
+@Composable
+fun ErrorListItem(
+    modifier: Modifier = Modifier,
+    message: String
+) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = message
+        )
+    }
 }
 
 @Preview
