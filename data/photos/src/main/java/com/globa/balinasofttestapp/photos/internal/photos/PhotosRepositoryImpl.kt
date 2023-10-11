@@ -74,6 +74,10 @@ internal class PhotosRepositoryImpl @Inject constructor(
         else Response.Error(message = "Delete error")
     }
 
+    override suspend fun removeAllLocalPhotos() {
+        photosLocalDataSource.removeAll()
+    }
+
 }
 
 fun ImageDtoOut.asDBModel(): PhotoDBModel =

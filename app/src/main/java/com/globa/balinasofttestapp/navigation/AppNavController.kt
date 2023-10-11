@@ -19,6 +19,10 @@ fun AppNavController(
     val navigateToMain: () -> Unit = {
         navController.navigate(AppRoutes.Main.name)
     }
+    val navigateToLogin: () -> Unit = {
+        viewModel.logout()
+        navController.navigate(AppRoutes.Login.name)
+    }
     val isLogin = viewModel.isAuthorized.collectAsState(initial = false) //TODO: rewrite with suspend/loading anim
     NavHost(navController = navController, startDestination = if (!isLogin.value) AppRoutes.Login.name else AppRoutes.Main.name) {
         composable(
@@ -32,7 +36,8 @@ fun AppNavController(
             route = AppRoutes.Main.name
         ) {
             DrawerNavController(
-                userName = userName.value
+                userName = userName.value,
+                onLogoutButtonClick = navigateToLogin
             )
         }
     }

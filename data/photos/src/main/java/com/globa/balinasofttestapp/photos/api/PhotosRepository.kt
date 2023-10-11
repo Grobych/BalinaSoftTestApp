@@ -11,4 +11,5 @@ interface PhotosRepository {
     suspend fun getPhoto(id: Int): Flow<Response<PhotoDetails>>
     suspend fun uploadPhoto(token: String, photo: UploadPhoto): Response<PhotoDetails>
     suspend fun removePhoto(token: String, id: Int): Response<Boolean>
+    suspend fun removeAllLocalPhotos()
 }

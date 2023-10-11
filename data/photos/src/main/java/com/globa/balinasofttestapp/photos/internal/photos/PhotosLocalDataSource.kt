@@ -27,6 +27,10 @@ class PhotosLocalDataSource @Inject constructor(
     suspend fun addPhoto(photoDBModel: PhotoDBModel) = withContext(coroutineDispatcher) {
         database.photosDao.insertPhoto(photoDBModel)
     }
+
+    suspend fun removeAll() = withContext(coroutineDispatcher) {
+        database.photosDao.clearAll()
+    }
 }
 
 fun PhotoDBModel.asDomainModel() : PhotoDetails =

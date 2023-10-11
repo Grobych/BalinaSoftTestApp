@@ -30,6 +30,11 @@ internal class LoginRepositoryImpl @Inject constructor(
     override suspend fun signIn(login: String, password: String) =
         handleSignResponse(tokenNetworkDataSource.signIn(login, password))
 
+    override suspend fun logOut() {
+        tokenDataStore.saveAccessToken("")
+        userNameDataStore.saveUserName("")
+    }
+
 
     private suspend fun handleSignResponse(response: NetworkResponse<Resource<SignUserDtoOut>>): AuthData {
         return when (response) {

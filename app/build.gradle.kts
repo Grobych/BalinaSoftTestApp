@@ -54,6 +54,7 @@ android {
 
 dependencies {
     implementation(project(path = ":data:location"))
+    implementation(project(path = ":data:photos"))
     implementation(project(path = ":data:login")) //TODO: remove?
     implementation(project(path = ":feature:login"))
     implementation(project(path = ":feature:photos"))
