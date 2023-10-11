@@ -2,6 +2,7 @@ package com.globa.balinasofttestappphotodetails
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -38,7 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.globa.balinasofttestapp.comments.api.model.Comment
 import com.globa.balinasofttestapp.common.ui.composable.BackHeader
 import com.globa.balinasofttestapp.common.ui.composable.LoadingAnimation
@@ -102,7 +104,7 @@ fun PhotoDetailScreen(
             when (val state = uiState.value) {
                 is PhotoDetailsUiState.Done -> DonePhotoDetailsScreen(photo = state.photo)
                 is PhotoDetailsUiState.Error -> ErrorPhotoDetailsScreen(errorMessage = state.message)
-                PhotoDetailsUiState.Loading -> LoadingAnimation(modifier = Modifier.fillMaxWidth())
+                is PhotoDetailsUiState.Loading -> LoadingAnimation(modifier = Modifier.fillMaxWidth())
             }
             when (val state = commentsUiState.value) {
                 is CommentsUiState.Done -> {
@@ -113,7 +115,7 @@ fun PhotoDetailScreen(
                     )
                 }
                 is CommentsUiState.Error -> ErrorPhotoDetailsScreen(errorMessage = state.message)
-                CommentsUiState.Loading -> LoadingAnimation(modifier = Modifier.fillMaxWidth())
+                is CommentsUiState.Loading -> LoadingAnimation(modifier = Modifier.fillMaxWidth())
             }
         }
     }
@@ -134,14 +136,22 @@ fun DonePhotoDetailsScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             modifier = Modifier
-                .fillMaxWidth()
+                .requiredWidth(360.dp)
+                .requiredHeight(480.dp)
                 .padding(10.dp)
                 .clip(MaterialTheme.shapes.medium)
             ,
             model = photo.url,
-            contentDescription = "Photo ${photo.id}"
+            contentDescription = "Photo ${photo.id}",
+            loading = { LoadingAnimation() },
+            error = {
+                Image(
+                    painter = painterResource(id = com.globa.balinasofttestapp.common.R.drawable.ic_broken),
+                    contentDescription = "Image broken or not found"
+                )
+            }
         )
         Text(
             modifier = Modifier
@@ -271,7 +281,7 @@ private fun ErrorPhotoDetailsScreen(
     errorMessage: String
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
