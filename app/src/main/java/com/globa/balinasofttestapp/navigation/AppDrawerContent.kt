@@ -38,6 +38,9 @@ fun AppDrawerContent(
 
     val navigate = fun(navItem: NavItem){
         if (currentPick == navItem) {
+            coroutineScope.launch {
+                drawerState.close()
+            }
             return
         }
 
