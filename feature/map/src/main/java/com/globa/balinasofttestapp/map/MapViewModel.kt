@@ -17,7 +17,7 @@ class MapViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MapUiState())
     val uiState = _uiState.asStateFlow()
 
-    init {
+    fun fetchPhotoLocations() {
         viewModelScope.launch {
             repository.getPhotoLocations()
                 .collect {list ->

@@ -23,6 +23,10 @@ class PhotosLocalDataSource @Inject constructor(
     suspend fun removePhoto(id: Int): Int = withContext(coroutineDispatcher) {
         database.photosDao.removePhoto(PhotoDBModel(id = id))
     }
+
+    suspend fun addPhoto(photoDBModel: PhotoDBModel) = withContext(coroutineDispatcher) {
+        database.photosDao.insertPhoto(photoDBModel)
+    }
 }
 
 fun PhotoDBModel.asDomainModel() : PhotoDetails =

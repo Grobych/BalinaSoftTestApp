@@ -28,7 +28,6 @@ fun MapScreen(
     onMarkerCLick: (Int) -> Unit,
     navigateToCamera: () -> Unit
 ) {
-
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
@@ -43,6 +42,7 @@ fun MapScreen(
         }
     ) {
         LocationPermissions {
+            viewModel.fetchPhotoLocations()
             val state = viewModel.uiState.collectAsState()
             MapScreenContent(
                 modifier = Modifier.padding(it),
